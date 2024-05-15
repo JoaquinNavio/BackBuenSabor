@@ -5,6 +5,7 @@ import com.entidades.buenSabor.domain.dto.BaseDto;
 import com.entidades.buenSabor.domain.entities.Base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,6 @@ public abstract class BaseControllerImp <E extends Base,D extends BaseDto, DC, D
     public ResponseEntity<?> deleteById(@PathVariable ID id){
         logger.info("INICIO DELETE BY ID");
         facade.deleteById(id);
-        return ResponseEntity.ok(null);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
