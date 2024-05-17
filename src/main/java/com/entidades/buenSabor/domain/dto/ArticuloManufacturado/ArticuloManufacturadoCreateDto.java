@@ -19,5 +19,6 @@ public class ArticuloManufacturadoCreateDto {
     private Double precioVenta;
     private String preparacion;
     private Long idUnidadMedida;
+
     private Set<Long> idsArticuloManufacturadoDetalles;
 }
