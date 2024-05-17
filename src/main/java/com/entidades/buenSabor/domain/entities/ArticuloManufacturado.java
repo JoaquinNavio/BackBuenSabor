@@ -23,11 +23,4 @@ public class ArticuloManufacturado  extends Articulo{
     private Integer tiempoEstimadoMinutos;
     private String preparacion;
 
-
-    @OneToMany
-    @JoinColumn(name = "articuloManufacturado_id")
-    @Builder.Default
-    private Set<ArticuloManufacturadoDetalle> articuloManufacturadoDetalles = new HashSet<>();
-
-
 }

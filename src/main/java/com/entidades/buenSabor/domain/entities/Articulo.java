@@ -38,5 +38,8 @@ public abstract class Articulo  extends Base {
     @ManyToOne
     protected UnidadMedida unidadMedida;
 
+    @ManyToOne
+    protected Categoria categoria;
+
 
 }

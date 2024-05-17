@@ -2,6 +2,7 @@ package com.entidades.buenSabor.domain.dto.ArticuloManufacturado;
 
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
 import com.entidades.buenSabor.domain.dto.UnidadMedida.UnidadMedidaDto;
 import lombok.*;
 
@@ -18,5 +19,5 @@ public class ArticuloManufacturadoDto extends BaseDto {
     private Double precioVenta;
     private String preparacion;
     private UnidadMedidaDto unidadMedida;
-    private Set<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalles;
+    private CategoriaDto categoria;
 }

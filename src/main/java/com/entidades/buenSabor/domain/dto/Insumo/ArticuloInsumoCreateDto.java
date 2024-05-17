@@ -18,4 +18,5 @@ public class ArticuloInsumoCreateDto {
     private Integer stockActual;
     private Integer stockMaximo;
     private Boolean esParaElaborar;
+    private Long idCategoria;
 }

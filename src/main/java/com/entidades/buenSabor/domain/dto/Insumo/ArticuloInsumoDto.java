@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.dto.Insumo;
 
 import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
 import com.entidades.buenSabor.domain.dto.UnidadMedida.UnidadMedidaDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,4 +20,5 @@ public class ArticuloInsumoDto extends BaseDto {
     private Integer stockActual;
     private Integer stockMaximo;
     private Boolean esParaElaborar;
+    private CategoriaDto categoria;
 }

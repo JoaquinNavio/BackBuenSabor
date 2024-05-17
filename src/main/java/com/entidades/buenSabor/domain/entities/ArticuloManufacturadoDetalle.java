@@ -19,4 +19,7 @@ public class ArticuloManufacturadoDetalle extends Base{
 
     @ManyToOne
     private ArticuloInsumo articuloInsumo;
+
+    @ManyToOne
+    private ArticuloManufacturado articuloManufacturado;
 }
