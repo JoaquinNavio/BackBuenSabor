@@ -38,8 +38,8 @@ public class Categoria extends Base{
    @OneToMany
     //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
     //DE ESTA MANERA PONE EL FOREIGN KEY 'categoria_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "categoria_padre_id")
+    @JoinColumn(name = "subcategoria")
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    private Set<Categoria> subCategorias = new HashSet<>();
+    private Set<Categoria> subcategorias = new HashSet<>();
 }
