@@ -12,5 +12,5 @@ import lombok.Setter;
 public class CategoriaCreateDto {
     private String denominacion;
     private boolean esInsumo;
-    private Long idCategoriaPadre;
+    //private Long idCategoriaPadre;
 }

@@ -14,5 +14,5 @@ import lombok.Setter;
 public class CategoriaDto extends BaseDto {
     private String denominacion;
     private boolean esInsumo;
-    private Categoria subcategoria;
+    //private CategoriaDto subcategoria;
 }

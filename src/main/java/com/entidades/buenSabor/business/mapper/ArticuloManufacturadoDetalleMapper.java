@@ -12,6 +12,6 @@ import org.mapstruct.Mapping;
 public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto,ArticuloManufacturadoDetalleCreateDto,ArticuloManufacturadoDetalleCreateDto>{
 
     @Mapping(target = "articuloInsumo", source = "idArticuloInsumo", qualifiedByName = "getById")
-    @Mapping(target = "articuloManufacturado", source = "idArticuloManufacturado", qualifiedByName = "getById")
+    //@Mapping(target = "articuloManufacturado", source = "idArticuloManufacturado", qualifiedByName = "getById")
     ArticuloManufacturadoDetalle toEntityCreate(ArticuloManufacturadoDetalleCreateDto source);
 }

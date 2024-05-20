@@ -7,9 +7,9 @@ import com.entidades.buenSabor.domain.entities.Categoria;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {CategoriaService.class})
+@Mapper(componentModel = "spring"/*, uses = {CategoriaService.class}*/)
 public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto, CategoriaCreateDto,CategoriaCreateDto>{
 
-    //@Mapping(target = "subcategoria", source = "idCategoriaPadre",qualifiedByName = "getById")
-    //Categoria toEntityCreate(CategoriaCreateDto source);
+    /*@Mapping(target = "subcategoria", source = "idCategoriaPadre",qualifiedByName = "getById")
+    Categoria toEntityCreate(CategoriaCreateDto source);*/
 }

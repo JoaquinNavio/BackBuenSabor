@@ -1,9 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -35,11 +32,11 @@ public class Categoria extends Base{
     private Set<Articulo> articulos = new HashSet<>();
 
 
-   @OneToMany
+    /*@OneToMany
     //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
     //DE ESTA MANERA PONE EL FOREIGN KEY 'categoria_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "subcategoria")
+    @JoinColumn(name = "categoria_id")
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    private Set<Categoria> subcategorias = new HashSet<>();
+    private Set<Categoria> subCategorias = new HashSet<>();*/
 }
