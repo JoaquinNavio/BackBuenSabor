@@ -5,10 +5,13 @@ import com.entidades.buenSabor.business.service.CategoriaService;
 import com.entidades.buenSabor.business.service.UnidadMedidaService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
+import com.entidades.buenSabor.domain.dto.Insumo.ArticuloInsumoCreateDto;
+import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", uses = {CategoriaService.class,UnidadMedidaService.class})
@@ -16,4 +19,9 @@ public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufact
     @Mapping(target = "unidadMedida", source = "idUnidadMedida",qualifiedByName = "getById")
     @Mapping(target = "categoria", source = "idCategoria",qualifiedByName = "getById")
     ArticuloManufacturado toEntityCreate(ArticuloManufacturadoCreateDto source);
+
+    @Override
+    @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
+    @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
+    ArticuloManufacturado toUpdate(@MappingTarget ArticuloManufacturado entity, ArticuloManufacturadoCreateDto source);
 }
