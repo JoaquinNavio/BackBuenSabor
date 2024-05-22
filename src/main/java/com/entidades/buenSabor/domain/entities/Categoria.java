@@ -1,9 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -14,12 +11,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-
 @Entity
-
-
 @ToString
-
 @SuperBuilder
 public class Categoria extends Base{
 
@@ -46,4 +39,8 @@ public class Categoria extends Base{
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
     private Set<Categoria> subCategorias = new HashSet<>();*/
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_padre_id")
+    private Categoria categoriaPadre;
 }
