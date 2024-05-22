@@ -41,10 +41,12 @@ public abstract class BaseControllerImp <E extends Base,D extends BaseDto, DC, D
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<D> edit(@RequestBody DE entity, @PathVariable ID id){
-        logger.info("INICIO EDIT {}",entity.getClass());
+    public ResponseEntity<D> edit(@RequestBody DE entity, @PathVariable ID id) {
+        logger.info("INICIO EDIT {}", entity.getClass());
+        logger.info("ENTIDAD QUE TRAE {}", entity.toString());
         return ResponseEntity.ok(facade.update(entity, id));
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable ID id){

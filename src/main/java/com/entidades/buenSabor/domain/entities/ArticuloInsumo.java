@@ -17,6 +17,7 @@ import java.util.Set;
 @SuperBuilder
 //@Audited
 public class ArticuloInsumo extends Articulo{
+
     private Double precioCompra;
     private Integer stockActual;
     private Integer stockMaximo;

@@ -19,5 +19,4 @@ public class ArticuloInsumoDto extends BaseDto {
     private Boolean esParaElaborar;
     private UnidadMedidaDto unidadMedida;
     private CategoriaDto categoria;
-
 }
