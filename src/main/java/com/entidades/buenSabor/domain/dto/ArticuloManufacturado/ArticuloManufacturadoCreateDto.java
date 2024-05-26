@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.domain.dto.ArticuloManufacturado;
 
-
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +20,5 @@ public class ArticuloManufacturadoCreateDto {
     private String preparacion;
     private Long idUnidadMedida;
     private Long idCategoria;
-
+    private Set<ArticuloManufacturadoDetalleCreateDto> detalles;
 }

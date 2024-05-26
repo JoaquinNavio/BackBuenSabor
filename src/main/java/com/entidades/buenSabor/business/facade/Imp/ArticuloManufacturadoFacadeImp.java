@@ -10,21 +10,32 @@ import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufact
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
-import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoCreateDto, Long> implements ArticuloManufacturadoFacade {
+
+    private final ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper;
+
     public ArticuloManufacturadoFacadeImp(BaseService<ArticuloManufacturado, Long> baseService, BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoCreateDto> baseMapper, ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper) {
         super(baseService, baseMapper);
         this.articuloManufacturadoDetalleMapper = articuloManufacturadoDetalleMapper;
     }
 
-    private final ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper;
     @Override
     public List<ArticuloManufacturadoDetalleDto> getDetallesById(Long id) {
-        return ((ArticuloManufacturadoService)baseService).getDetallesById(id).stream().map(articuloManufacturadoDetalleMapper::toDTO).toList();
+        return ((ArticuloManufacturadoService) baseService).getDetallesById(id).stream().map(articuloManufacturadoDetalleMapper::toDTO).toList();
+    }
+
+    @Override
+    public ArticuloManufacturado createWithDetails(ArticuloManufacturadoCreateDto dto) {
+        return ((ArticuloManufacturadoService) baseService).createWithDetails(dto);
+    }
+
+    @Override
+    public ArticuloManufacturado updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto) {
+        return ((ArticuloManufacturadoService) baseService).updateWithDetails(id, dto);
     }
 }
