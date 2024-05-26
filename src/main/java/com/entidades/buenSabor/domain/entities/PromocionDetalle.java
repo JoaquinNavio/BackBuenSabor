@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -11,11 +12,14 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Getter
 @SuperBuilder
-//@Audited
-public class PromocionDetalle extends Base{
+public class PromocionDetalle extends Base {
     private String detalle;
 
     @ManyToOne
+    @JoinColumn(name = "articulo_id")
     private Articulo articulo;
 
+    @ManyToOne
+    @JoinColumn(name = "promocion_id")
+    private Promocion promocion;
 }
