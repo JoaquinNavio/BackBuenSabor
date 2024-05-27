@@ -12,7 +12,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
 @Setter
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)

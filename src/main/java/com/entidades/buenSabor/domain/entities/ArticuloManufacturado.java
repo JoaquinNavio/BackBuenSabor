@@ -11,7 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @SuperBuilder
 //@Audited
 public class ArticuloManufacturado extends Articulo {
@@ -23,4 +22,6 @@ public class ArticuloManufacturado extends Articulo {
     @OneToMany(mappedBy = "articuloManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ArticuloManufacturadoDetalle> detalles;
 
+    @OneToOne
+    private Image image;
 }

@@ -1,13 +1,11 @@
 package com.entidades.buenSabor.business.service.Imp;
 
-import com.entidades.buenSabor.business.service.ArticuloInsumoService;
-import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
+import com.entidades.buenSabor.business.service.*;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
-import com.entidades.buenSabor.business.service.CategoriaService;
-import com.entidades.buenSabor.business.service.UnidadMedidaService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
+import com.entidades.buenSabor.domain.entities.Image;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
 import com.entidades.buenSabor.repositories.BaseRepository;
@@ -32,6 +30,8 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
 
     @Autowired
     private CategoriaService categoriaService;
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private ArticuloInsumoService articuloInsumoService;
@@ -53,7 +53,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         articuloManufacturado.setPreparacion(dto.getPreparacion());
         articuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         articuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
-
+        Image image = new Image();
+        image.setId(dto.getIdImage());
+        articuloManufacturado.setImage(image);
         // Guardar ArticuloManufacturado
         ArticuloManufacturado savedArticuloManufacturado = baseRepository.save(articuloManufacturado);
 
@@ -88,8 +90,26 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         existingArticuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         existingArticuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
+        Long idImageToDelete = null;
+        if (existingArticuloManufacturado.getImage() !=null && !existingArticuloManufacturado.getImage().getId().equals(dto.getIdImage())) {
+            idImageToDelete= existingArticuloManufacturado.getImage().getId();
+        }
+        if(dto.getIdImage() != null){
+            Image image = new Image();
+            image.setId(dto.getIdImage());
+            existingArticuloManufacturado.setImage(image);
+        } else {
+            existingArticuloManufacturado.setImage(null);
+        }
+
+
         // Guardar los cambios en el artículo manufacturado
         ArticuloManufacturado updatedArticuloManufacturado = baseRepository.save(existingArticuloManufacturado);
+
+        if (idImageToDelete!=null){
+            imageService.deleteById(idImageToDelete);
+        }
+
 
         // Eliminar los detalles existentes del artículo manufacturado
 

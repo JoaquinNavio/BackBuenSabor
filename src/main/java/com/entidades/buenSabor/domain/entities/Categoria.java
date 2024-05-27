@@ -12,7 +12,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@ToString
 @SuperBuilder
 public class Categoria extends Base{
 

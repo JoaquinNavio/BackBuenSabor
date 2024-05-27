@@ -20,5 +20,6 @@ public class ArticuloManufacturadoCreateDto {
     private String preparacion;
     private Long idUnidadMedida;
     private Long idCategoria;
+    private Long idImage;
     private Set<ArticuloManufacturadoDetalleCreateDto> detalles;
 }

@@ -3,7 +3,9 @@ package com.entidades.buenSabor.domain.dto.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.dto.BaseDto;
 import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
+import com.entidades.buenSabor.domain.dto.Image.ImageDto;
 import com.entidades.buenSabor.domain.dto.UnidadMedida.UnidadMedidaDto;
+import com.entidades.buenSabor.domain.entities.Image;
 import lombok.*;
 
 import java.util.Set;
@@ -19,5 +21,6 @@ public class ArticuloManufacturadoDto extends BaseDto {
     private Double precioVenta;
     private String preparacion;
     private UnidadMedidaDto unidadMedida;
+    private ImageDto image;
     private CategoriaDto categoria;
 }

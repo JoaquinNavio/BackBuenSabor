@@ -13,7 +13,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @SuperBuilder
 //@Audited
 public class ArticuloInsumo extends Articulo{
@@ -22,5 +21,9 @@ public class ArticuloInsumo extends Articulo{
     private Integer stockActual;
     private Integer stockMaximo;
     private Boolean esParaElaborar;
+
+    @OneToOne
+    private Image image;
+
 
 }
