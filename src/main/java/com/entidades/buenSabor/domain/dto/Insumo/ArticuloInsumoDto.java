@@ -1,8 +1,7 @@
 package com.entidades.buenSabor.domain.dto.Insumo;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
-import com.entidades.buenSabor.domain.dto.Image.ImageDto;
 import com.entidades.buenSabor.domain.dto.UnidadMedida.UnidadMedidaDto;
 import com.entidades.buenSabor.domain.entities.Image;
 import lombok.AllArgsConstructor;

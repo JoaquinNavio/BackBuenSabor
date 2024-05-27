@@ -1,7 +1,7 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.*;
-import java.util.UUID;
 
 
 import lombok.*;
@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "images")
-public class Image extends Base{
+public class Image extends Base {
 
     @Column(name = "name_image")
     private String name;

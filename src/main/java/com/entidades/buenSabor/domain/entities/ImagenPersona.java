@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -10,6 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Getter
 @SuperBuilder
-public class ImagenPersona extends Base{
+public class ImagenPersona extends Base {
     private String url;
 }

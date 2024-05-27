@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.domain.dto.Empresa;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import com.entidades.buenSabor.domain.dto.Sucursal.ShortSucursal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

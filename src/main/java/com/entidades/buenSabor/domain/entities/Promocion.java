@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import com.entidades.buenSabor.domain.enums.TipoPromocion;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,10 +29,7 @@ public class Promocion extends Base {
     private String descripcionDescuento;
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
-    /* ESTO CREA TABLA INTERMEDIA promocion_articulo
-    @ManyToMany(mappedBy = "promociones")
-    private Set<Articulo> articulos = new HashSet<>();
-    */
+
     @OneToMany
     @JoinColumn(name = "promocion_id")
     @Builder.Default
@@ -41,13 +39,9 @@ public class Promocion extends Base {
     @ManyToMany(mappedBy = "promociones")
     private Set<Sucursal> sucursales = new HashSet<>();
 
-    /*@OneToMany
-    @JoinColumn(name = "promocion_id")
+    @OneToMany(mappedBy = "promocion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<PromocionDetalle> detalles = new HashSet<>();*/
-
-    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<PromocionDetalle> detalles;
+    private Set<PromocionDetalle> detalles = new HashSet<>();
 
     @OneToOne
     private Image image;

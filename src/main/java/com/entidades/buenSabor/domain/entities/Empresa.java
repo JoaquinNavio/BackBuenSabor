@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @SuperBuilder
-public class Empresa extends Base{
+public class Empresa extends Base {
 
     private String nombre;
     private String razonSocial;

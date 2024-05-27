@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -21,6 +22,8 @@ public abstract class Articulo extends Base {
     protected String denominacion;
     protected Double precioVenta;
 
+    /*
+    //ESTO CREA UNA TABLA INTERMEDIA promocion_articulo
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinTable(name = "promocion_articulo",
@@ -28,7 +31,7 @@ public abstract class Articulo extends Base {
             inverseJoinColumns = @JoinColumn(name = "articulo_id"))
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    protected Set<Promocion> promociones = new HashSet<>();
+    protected Set<Promocion> promociones = new HashSet<>();*/
 
     @OneToMany
     @JoinColumn(name = "articulo_id")

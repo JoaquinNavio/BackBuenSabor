@@ -1,8 +1,8 @@
 package com.entidades.buenSabor.presentation.rest.Base;
 
 import com.entidades.buenSabor.business.facade.Base.BaseFacadeImp;
-import com.entidades.buenSabor.domain.dto.BaseDto;
-import com.entidades.buenSabor.domain.entities.Base;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

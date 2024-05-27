@@ -19,12 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class PromocionDetalleFacadeImp extends BaseFacadeImp<PromocionDetalle, PromocionDetalleDto, PromocionDetalleCreateDto, PromocionDetalleCreateDto, Long> implements PromocionDetalleFacade {
 
-
     public PromocionDetalleFacadeImp(PromocionDetalleService promocionDetalleService, PromocionDetalleMapper promocionDetalleMapper) {
         super(promocionDetalleService, promocionDetalleMapper);
 
     }
-
-
-
 }

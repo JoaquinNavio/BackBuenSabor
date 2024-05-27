@@ -1,10 +1,9 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.List;
 @Getter
 @ToString
 @SuperBuilder
-public class Localidad extends Base{
+public class Localidad extends Base {
     private String nombre;
 
     @ManyToOne

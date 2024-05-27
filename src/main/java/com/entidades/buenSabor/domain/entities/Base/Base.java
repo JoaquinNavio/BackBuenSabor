@@ -1,4 +1,4 @@
-package com.entidades.buenSabor.domain.entities;
+package com.entidades.buenSabor.domain.entities.Base;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

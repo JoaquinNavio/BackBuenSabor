@@ -1,7 +1,7 @@
-package com.entidades.buenSabor.business.mapper;
+package com.entidades.buenSabor.business.mapper.Base;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
-import com.entidades.buenSabor.domain.entities.Base;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;

@@ -12,5 +12,4 @@ import java.util.List;
 
 @Service
 public class PromocionDetalleServiceImp extends BaseServiceImp<PromocionDetalle, Long> implements PromocionDetalleService {
-
 }

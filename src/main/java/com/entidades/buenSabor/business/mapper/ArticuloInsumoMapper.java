@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.business.mapper;
 
+import com.entidades.buenSabor.business.mapper.Base.BaseMapper;
 import com.entidades.buenSabor.business.service.CategoriaService;
 import com.entidades.buenSabor.business.service.UnidadMedidaService;
 import com.entidades.buenSabor.domain.dto.Insumo.ArticuloInsumoCreateDto;

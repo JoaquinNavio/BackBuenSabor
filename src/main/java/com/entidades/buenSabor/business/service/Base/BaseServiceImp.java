@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.service.Base;
-import com.entidades.buenSabor.domain.entities.Base;
-import com.entidades.buenSabor.repositories.BaseRepository;
+import com.entidades.buenSabor.domain.entities.Base.Base;
+import com.entidades.buenSabor.repositories.Base.BaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

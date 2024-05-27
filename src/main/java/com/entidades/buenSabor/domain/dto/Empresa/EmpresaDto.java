@@ -1,13 +1,11 @@
 package com.entidades.buenSabor.domain.dto.Empresa;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

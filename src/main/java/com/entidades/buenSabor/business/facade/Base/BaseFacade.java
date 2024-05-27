@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.facade.Base;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 
 import java.io.Serializable;
 import java.util.List;

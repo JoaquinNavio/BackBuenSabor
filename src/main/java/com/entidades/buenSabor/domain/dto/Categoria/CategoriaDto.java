@@ -1,7 +1,6 @@
 package com.entidades.buenSabor.domain.dto.Categoria;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
-import com.entidades.buenSabor.domain.entities.Categoria;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

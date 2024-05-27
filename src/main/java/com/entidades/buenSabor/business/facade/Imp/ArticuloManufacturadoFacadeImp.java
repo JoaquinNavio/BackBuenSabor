@@ -3,7 +3,7 @@ package com.entidades.buenSabor.business.facade.Imp;
 import com.entidades.buenSabor.business.facade.ArticuloManufacturadoFacade;
 import com.entidades.buenSabor.business.facade.Base.BaseFacadeImp;
 import com.entidades.buenSabor.business.mapper.ArticuloManufacturadoDetalleMapper;
-import com.entidades.buenSabor.business.mapper.BaseMapper;
+import com.entidades.buenSabor.business.mapper.Base.BaseMapper;
 import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;

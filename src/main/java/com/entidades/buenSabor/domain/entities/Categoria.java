@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @SuperBuilder
-public class Categoria extends Base{
+public class Categoria extends Base {
 
     private String denominacion;
     private boolean esInsumo;

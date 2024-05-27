@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.domain.dto.Localidad;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import com.entidades.buenSabor.domain.dto.Provincia.ProvinciaDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

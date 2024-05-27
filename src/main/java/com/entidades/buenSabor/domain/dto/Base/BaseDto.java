@@ -1,4 +1,4 @@
-package com.entidades.buenSabor.domain.dto;
+package com.entidades.buenSabor.domain.dto.Base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

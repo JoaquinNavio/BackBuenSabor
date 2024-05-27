@@ -1,13 +1,13 @@
 package com.entidades.buenSabor.domain.entities;
 
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.FormaPago;
 import com.entidades.buenSabor.domain.enums.TipoEnvio;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,7 +22,7 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 //@Audited
-public class Pedido extends Base{
+public class Pedido extends Base {
 
     private LocalTime horaEstimadaFinalizacion;
     private Double total;

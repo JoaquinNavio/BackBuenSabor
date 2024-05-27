@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.business.mapper;
 
+import com.entidades.buenSabor.business.mapper.Base.BaseMapper;
 import com.entidades.buenSabor.business.service.LocalidadService;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioCreateDto;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;

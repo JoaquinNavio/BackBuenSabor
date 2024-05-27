@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.domain.dto.ArticuloInsumo;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
 import com.entidades.buenSabor.domain.dto.UnidadMedida.UnidadMedidaDto;
 import com.entidades.buenSabor.domain.entities.Image;

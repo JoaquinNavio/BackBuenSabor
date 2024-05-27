@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -11,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 //@Audited
-public class UnidadMedida extends Base{
+public class UnidadMedida extends Base {
 
     private String denominacion;
 

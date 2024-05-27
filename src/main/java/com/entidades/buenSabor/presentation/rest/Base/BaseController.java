@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.presentation.rest.Base;
 
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;

@@ -1,7 +1,6 @@
 package com.entidades.buenSabor.domain.dto.Image;
-import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Base.BaseDto;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor

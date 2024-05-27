@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class PromocionDetalle extends Base {
-    private String cantidad;
+    private Integer cantidad;
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")

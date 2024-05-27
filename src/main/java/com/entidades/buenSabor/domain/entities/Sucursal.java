@@ -1,18 +1,13 @@
 package com.entidades.buenSabor.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.entidades.buenSabor.domain.entities.Base.Base;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.envers.Audited;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,7 +18,7 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 //@Audited
-public class Sucursal extends  Base{
+public class Sucursal extends Base {
 
     private String nombre;
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")

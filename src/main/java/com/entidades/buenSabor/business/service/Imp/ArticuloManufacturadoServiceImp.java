@@ -8,7 +8,6 @@ import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import com.entidades.buenSabor.domain.entities.Image;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
-import com.entidades.buenSabor.repositories.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +30,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
 
     @Autowired
     private CategoriaService categoriaService;
+
     @Autowired
     private ImageService imageService;
 

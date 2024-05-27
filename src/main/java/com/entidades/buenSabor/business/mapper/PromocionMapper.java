@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.business.mapper;
 
+import com.entidades.buenSabor.business.mapper.Base.BaseMapper;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionCreateDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionDto;
 import com.entidades.buenSabor.domain.entities.Promocion;
