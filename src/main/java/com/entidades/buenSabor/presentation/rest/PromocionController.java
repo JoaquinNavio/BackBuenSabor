@@ -1,13 +1,9 @@
 package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.facade.Imp.PromocionFacadeImp;
-import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
-import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
-import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionCreateDto;
-import com.entidades.buenSabor.domain.dto.Promocion.PromocionDetalleDto;
+import com.entidades.buenSabor.domain.dto.PromocionDetalle.PromocionDetalleDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionDto;
-import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.Promocion;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.http.HttpStatus;

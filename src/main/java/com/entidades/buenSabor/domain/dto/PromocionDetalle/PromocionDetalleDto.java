@@ -1,7 +1,8 @@
-package com.entidades.buenSabor.domain.dto.Promocion;
+package com.entidades.buenSabor.domain.dto.PromocionDetalle;
 
 
 import com.entidades.buenSabor.domain.dto.Base.BaseDto;
+import com.entidades.buenSabor.domain.dto.Promocion.PromocionDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

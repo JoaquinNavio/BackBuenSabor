@@ -8,7 +8,7 @@ import com.entidades.buenSabor.business.mapper.PromocionDetalleMapper;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.business.service.PromocionService;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionCreateDto;
-import com.entidades.buenSabor.domain.dto.Promocion.PromocionDetalleDto;
+import com.entidades.buenSabor.domain.dto.PromocionDetalle.PromocionDetalleDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionDto;
 import com.entidades.buenSabor.domain.entities.Promocion;
 import org.springframework.stereotype.Service;

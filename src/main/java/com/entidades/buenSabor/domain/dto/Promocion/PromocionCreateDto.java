@@ -1,7 +1,7 @@
 package com.entidades.buenSabor.domain.dto.Promocion;
 
 
-import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleCreateDto;
+import com.entidades.buenSabor.domain.dto.PromocionDetalle.PromocionDetalleCreateDto;
 import com.entidades.buenSabor.domain.enums.TipoPromocion;
 import lombok.AllArgsConstructor;
 import lombok.Data;

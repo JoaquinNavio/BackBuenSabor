@@ -1,8 +1,8 @@
 package com.entidades.buenSabor.business.mapper;
 
 import com.entidades.buenSabor.business.mapper.Base.BaseMapper;
-import com.entidades.buenSabor.domain.dto.Promocion.PromocionDetalleCreateDto;
-import com.entidades.buenSabor.domain.dto.Promocion.PromocionDetalleDto;
+import com.entidades.buenSabor.domain.dto.PromocionDetalle.PromocionDetalleCreateDto;
+import com.entidades.buenSabor.domain.dto.PromocionDetalle.PromocionDetalleDto;
 import com.entidades.buenSabor.domain.entities.PromocionDetalle;
 import org.mapstruct.*;
 import org.mapstruct.Mapper;

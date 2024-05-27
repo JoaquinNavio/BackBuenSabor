@@ -1,12 +1,10 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.service.ArticuloService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.PromocionService;
-import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionCreateDto;
 import com.entidades.buenSabor.domain.entities.*;
-import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
-import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
 import com.entidades.buenSabor.repositories.PromocionDetalleRepository;
 import com.entidades.buenSabor.repositories.PromocionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,10 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
 
     @Autowired
     private PromocionDetalleRepository detalleRepository;
+
+    @Autowired
+    private ArticuloService articuloService;
+
     @Override
     public List<PromocionDetalle> getDetallesById(Long id) {
         return ((PromocionRepository)baseRepository).findDetallesById(id);
@@ -53,8 +55,7 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
             PromocionDetalle detalle = new PromocionDetalle();
             detalle.setCantidad(detalleDto.getCantidad());
 
-            //TODO AGREGAR ARTICULOSERVICE
-            //detalle.setArticulo(ArticuloService.getById(detalleDto.getIdArticuloInsumo()));
+            detalle.setArticulo(articuloService.getById(detalleDto.getArticuloId()));
 
             detalle.setPromocion(savedPromocion);
             return detalle;
@@ -117,9 +118,8 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
                 detalle.setPromocion(updatedPromocion);
             }
             detalle.setCantidad(detalleDto.getCantidad());
-            //
-            //TODO AGREGAR ARTICULOSERVICE
-            //detalle.setArticulo(ArticuloService.getById(detalleDto.getIdArticuloInsumo()));
+
+            detalle.setArticulo(articuloService.getById(detalleDto.getArticuloId()));
 
             return detalle;
         }).collect(Collectors.toList());

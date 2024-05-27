@@ -1,4 +1,4 @@
-package com.entidades.buenSabor.domain.dto.Promocion;
+package com.entidades.buenSabor.domain.dto.PromocionDetalle;
 
 
 
