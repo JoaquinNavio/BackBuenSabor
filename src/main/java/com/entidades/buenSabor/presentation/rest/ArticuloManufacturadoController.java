@@ -47,8 +47,7 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
         dto.setTiempoEstimadoMinutos(articuloManufacturado.getTiempoEstimadoMinutos());
         dto.setPrecioVenta(articuloManufacturado.getPrecioVenta());
         dto.setPreparacion(articuloManufacturado.getPreparacion());
-        // Agrega las conversiones de UnidadMedida y Categoria a DTO si es necesario
-        // Agrega la conversión de detalles a DTO si es necesario
+
         return dto;
     }
 }

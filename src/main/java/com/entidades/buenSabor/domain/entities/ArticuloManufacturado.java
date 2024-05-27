@@ -22,6 +22,6 @@ public class ArticuloManufacturado extends Articulo {
     @OneToMany(mappedBy = "articuloManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ArticuloManufacturadoDetalle> detalles;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Image image;
 }
