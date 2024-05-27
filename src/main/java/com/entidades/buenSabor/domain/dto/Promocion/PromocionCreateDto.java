@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.dto.Promocion;
 
 
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleCreateDto;
 import com.entidades.buenSabor.domain.enums.TipoPromocion;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,4 +24,5 @@ public class PromocionCreateDto {
     private String descripcionDescuento;
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
+    private Set<PromocionDetalleCreateDto> detalles;
 }

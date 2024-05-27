@@ -28,10 +28,10 @@ public class Promocion extends Base {
     private String descripcionDescuento;
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
-
+    /* ESTO CREA TABLA INTERMEDIA promocion_articulo
     @ManyToMany(mappedBy = "promociones")
     private Set<Articulo> articulos = new HashSet<>();
-
+    */
     @OneToMany
     @JoinColumn(name = "promocion_id")
     @Builder.Default
@@ -41,10 +41,13 @@ public class Promocion extends Base {
     @ManyToMany(mappedBy = "promociones")
     private Set<Sucursal> sucursales = new HashSet<>();
 
-    @OneToMany
+    /*@OneToMany
     @JoinColumn(name = "promocion_id")
     @Builder.Default
-    private Set<PromocionDetalle> detalles = new HashSet<>();
+    private Set<PromocionDetalle> detalles = new HashSet<>();*/
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PromocionDetalle> detalles;
 
     @OneToOne
     private Image image;

@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PromocionDetalleCreateDto {
-    private String detalle;
+    private Long detalleId;
+    private Integer cantidad;
     private Long articuloId;
     private Long promocionId;
 }
