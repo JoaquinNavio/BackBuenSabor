@@ -17,9 +17,9 @@ import java.util.List;
 
 @Service
 public class PromocionFacadeImp extends BaseFacadeImp<Promocion, PromocionDto, PromocionCreateDto, PromocionCreateDto, Long> implements PromocionFacade {
-    private PromocionDetalleMapper promocionDetalleMapper = null;
+    private final PromocionDetalleMapper promocionDetalleMapper ;
 
-    public PromocionFacadeImp(BaseService<Promocion, Long> baseService, BaseMapper<Promocion, PromocionDto, PromocionCreateDto, PromocionCreateDto> baseMapper, ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper) {
+    public PromocionFacadeImp(BaseService<Promocion, Long> baseService, BaseMapper<Promocion, PromocionDto, PromocionCreateDto, PromocionCreateDto> baseMapper, PromocionDetalleMapper promocionDetalleMapper) {
         super(baseService, baseMapper);
         this.promocionDetalleMapper = promocionDetalleMapper;
     }
