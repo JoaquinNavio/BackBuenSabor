@@ -8,12 +8,12 @@ import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import com.entidades.buenSabor.domain.entities.Image;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
-import com.entidades.buenSabor.repositories.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
 
     @Autowired
     private CategoriaService categoriaService;
+
     @Autowired
     private ImageService imageService;
 
@@ -91,10 +92,10 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         existingArticuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
         Long idImageToDelete = null;
-        if (existingArticuloManufacturado.getImage() !=null && !existingArticuloManufacturado.getImage().getId().equals(dto.getIdImage())) {
-            idImageToDelete= existingArticuloManufacturado.getImage().getId();
+        if (existingArticuloManufacturado.getImage() != null && !existingArticuloManufacturado.getImage().getId().equals(dto.getIdImage())) {
+            idImageToDelete = existingArticuloManufacturado.getImage().getId();
         }
-        if(dto.getIdImage() != null){
+        if (dto.getIdImage() != null) {
             Image image = new Image();
             image.setId(dto.getIdImage());
             existingArticuloManufacturado.setImage(image);
@@ -102,32 +103,35 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             existingArticuloManufacturado.setImage(null);
         }
 
-
         // Guardar los cambios en el artículo manufacturado
         ArticuloManufacturado updatedArticuloManufacturado = baseRepository.save(existingArticuloManufacturado);
 
-        if (idImageToDelete!=null){
-            imageService.deleteById(idImageToDelete);
-        }
+
+        /// Obtener los detalles existentes del artículo manufacturado
+        Map<Long, ArticuloManufacturadoDetalle> existingDetallesMap = existingArticuloManufacturado.getDetalles().stream()
+                .collect(Collectors.toMap(ArticuloManufacturadoDetalle::getId, detalle -> detalle));
 
 
-        // Eliminar los detalles existentes del artículo manufacturado
-
-        existingArticuloManufacturado.getDetalles().forEach(detalle -> detalleRepository.delete(detalle));
-
-
-        // Crear y asociar los nuevos detalles
-        List<ArticuloManufacturadoDetalle> detalles = dto.getDetalles().stream().map(detalleDto -> {
-            ArticuloManufacturadoDetalle detalle = new ArticuloManufacturadoDetalle();
+        // Actualizar y crear los detalles del artículo manufacturado
+        List<ArticuloManufacturadoDetalle> nuevosDetalles = dto.getDetalles().stream().map(detalleDto -> {
+            ArticuloManufacturadoDetalle detalle;
+            if (detalleDto.getIdDetalle() != null && existingDetallesMap.containsKey(detalleDto.getIdDetalle())) {
+                // Actualizar el detalle existente
+                detalle = existingDetallesMap.get(detalleDto.getIdDetalle());
+            } else {
+                // Crear un nuevo detalle
+                detalle = new ArticuloManufacturadoDetalle();
+                detalle.setArticuloManufacturado(updatedArticuloManufacturado);
+            }
             detalle.setCantidad(detalleDto.getCantidad());
             detalle.setArticuloInsumo(articuloInsumoService.getById(detalleDto.getIdArticuloInsumo()));
-            detalle.setArticuloManufacturado(updatedArticuloManufacturado);
             return detalle;
         }).collect(Collectors.toList());
 
-        // Guardar los nuevos detalles
-        detalleRepository.saveAll(detalles);
+        // Guardar los detalles actualizados y nuevos
+        detalleRepository.saveAll(nuevosDetalles);
 
         return updatedArticuloManufacturado;
     }
+
 }

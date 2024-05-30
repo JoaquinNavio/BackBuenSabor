@@ -16,5 +16,5 @@ public class ArticuloManufacturadoDetalleDto extends BaseDto {
     private Integer cantidad;
     private ArticuloInsumoDto articuloInsumo;
     private ArticuloManufacturadoDto articuloManufacturado;
-
 }
+
