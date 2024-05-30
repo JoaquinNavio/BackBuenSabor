@@ -6,6 +6,7 @@ import com.entidades.buenSabor.domain.enums.FormaPago;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
 
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Getter
 @ToString
 @SuperBuilder
-//@Audited
+@Audited
 public class Factura extends Base {
     private LocalDate fechaFcturacion;
     private Integer mpPaymentId;

@@ -3,6 +3,7 @@ import com.entidades.buenSabor.domain.entities.Base.Base;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 
@@ -13,7 +14,7 @@ import org.hibernate.envers.NotAudited;
 @Getter
 @ToString
 @SuperBuilder
-//@Audited
+@Audited
 public class Domicilio extends Base {
     private String calle;
     private Integer numero;

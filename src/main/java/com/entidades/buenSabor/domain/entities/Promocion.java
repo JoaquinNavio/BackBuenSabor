@@ -5,6 +5,7 @@ import com.entidades.buenSabor.domain.enums.TipoPromocion;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Getter
 @ToString
 @SuperBuilder
-//@Audited
+@Audited
 public class Promocion extends Base {
     private String denominacion;
     private LocalDate fechaDesde;
@@ -44,6 +45,7 @@ public class Promocion extends Base {
     private Set<PromocionDetalle> detalles = new HashSet<>();
 
     @OneToOne
+    @NotAudited
     private Image image;
 
 }
