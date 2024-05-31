@@ -15,6 +15,9 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/ArticuloManufacturadoDetalle")
 public class ArticuloManufacturadoDetalleController extends BaseControllerImp<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto, ArticuloManufacturadoDetalleCreateDto, ArticuloManufacturadoDetalleCreateDto, Long, ArticuloManufacturadoDetalleFacadeImp> {
+
+    /*Metodo constructor: Inicializa el controlador con una instancia de ArticuloManufacturadoFacadeImp.
+     * Permite inyectar la dependencia del facade para manejar la lógica de negocio*/
     public ArticuloManufacturadoDetalleController(ArticuloManufacturadoDetalleFacadeImp facade) {
         super(facade);
     }

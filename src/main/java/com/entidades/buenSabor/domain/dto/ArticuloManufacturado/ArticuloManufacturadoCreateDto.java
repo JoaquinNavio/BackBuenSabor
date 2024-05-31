@@ -8,6 +8,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
+/*CreateDTO: Se usa específicamente para la creación de nuevos registros.
+Contiene sólo los datos necesarios para crear una nueva entidad,
+excluyendo atributos generados o derivados como IDs.*/
+
 @Setter
 @Getter
 @NoArgsConstructor

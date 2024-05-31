@@ -9,7 +9,9 @@ import com.entidades.buenSabor.domain.entities.Image;
 import lombok.*;
 
 import java.util.Set;
-
+/*DTO:
+Representa la forma de los datos cuando se envían o reciben del cliente.
+Contiene toda la información que necesita ser mostrada o enviada.*/
 @Setter
 @Getter
 @NoArgsConstructor

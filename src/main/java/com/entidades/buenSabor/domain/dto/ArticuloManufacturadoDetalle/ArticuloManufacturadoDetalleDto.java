@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/*DTO:
+Representa la forma de los datos cuando se envían o reciben del cliente.
+Contiene toda la información que necesita ser mostrada o enviada.*/
 @Setter
 @Getter
 @NoArgsConstructor

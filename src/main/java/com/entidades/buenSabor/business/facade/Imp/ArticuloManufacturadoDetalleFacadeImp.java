@@ -9,6 +9,10 @@ import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloM
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import org.springframework.stereotype.Service;
 
+/*ArticuloManufacturadoDetalleFacadeImp:
+Esta clase implementa la interfaz ArticuloManufacturadoDetalleFacade.
+Utiliza la clase base BaseFacadeImp con parámetros específicos para ArticuloManufacturadoDetalle.
+Implementa las operaciones CRUD heredadas de BaseFacadeImp.*/
 @Service
 public class ArticuloManufacturadoDetalleFacadeImp extends BaseFacadeImp<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto, ArticuloManufacturadoDetalleCreateDto, ArticuloManufacturadoDetalleCreateDto, Long> implements ArticuloManufacturadoDetalleFacade {
     public ArticuloManufacturadoDetalleFacadeImp(BaseService<ArticuloManufacturadoDetalle, Long> baseService, BaseMapper<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto,ArticuloManufacturadoDetalleCreateDto, ArticuloManufacturadoDetalleCreateDto> baseMapper) {
