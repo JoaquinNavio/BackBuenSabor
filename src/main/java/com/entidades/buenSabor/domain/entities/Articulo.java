@@ -28,17 +28,6 @@ public abstract class Articulo extends Base {
     protected String denominacion;
     protected Double precioVenta;
 
-    /*@OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true):
-    Indica una relación uno a muchos con PromocionArticulo.
-    El cascade = CascadeType.ALL propaga todas las operaciones (persist, merge, remove, etc.) a las entidades relacionadas.
-    orphanRemoval = true Indica que si una entidad PromocionArticulo se elimina de la colección estaEnPromociones de Articulo,
-    la entidad PromocionArticulo se eliminará de la base de datos.
-    Esto es útil para mantener la integridad referencial y evitar registros huérfanos.*/
-    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)
-    /*Inicializa la colección estaEnPromociones como un HashSet vacío.
-    Esto asegura que la colección esté lista para usarse sin necesidad de inicializarla
-    explícitamente en el constructor o en otros métodos.*/
-    protected Set<PromocionArticulo> estaEnPromociones = new HashSet<>();
 
     /*@OneToMany: Relación uno a muchos con ImagenArticulo.
     @JoinColumn(name = "articulo_id") especifica la columna de unión en la tabla ImagenArticulo.*/

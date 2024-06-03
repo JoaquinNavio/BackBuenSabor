@@ -24,16 +24,25 @@ import java.util.List;
 
 @Service
 public class PromocionFacadeImp extends BaseFacadeImp<Promocion, PromocionDto, PromocionCreateDto, PromocionCreateDto, Long> implements PromocionFacade {
+    private final PromocionDetalleMapper promocionDetalleMapper ;
 
-    public PromocionFacadeImp(BaseService<Promocion, Long> baseService, BaseMapper<Promocion, PromocionDto, PromocionCreateDto, PromocionCreateDto> baseMapper, ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper) {
+    public PromocionFacadeImp(BaseService<Promocion, Long> baseService, BaseMapper<Promocion, PromocionDto, PromocionCreateDto, PromocionCreateDto> baseMapper, PromocionDetalleMapper promocionDetalleMapper) {
         super(baseService, baseMapper);
         this.promocionDetalleMapper = promocionDetalleMapper;
     }
 
 
-    private PromocionDetalleMapper promocionDetalleMapper = null;
-
     public List<PromocionDetalleDto> getDetallesById(Long id) {
         return ((PromocionService)baseService).getDetallesById(id).stream().map(promocionDetalleMapper::toDTO).toList();
+    }
+
+    @Override
+    public Promocion createWithDetails(PromocionCreateDto dto) {
+        return ((PromocionService) baseService).createWithDetails(dto);
+    }
+
+    @Override
+    public Promocion updateWithDetails(Long id, PromocionCreateDto dto) {
+        return ((PromocionService) baseService).updateWithDetails(id, dto);
     }
 }

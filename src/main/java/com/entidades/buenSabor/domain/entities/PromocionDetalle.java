@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class PromocionDetalle extends Base {
-    private String detalle;
+    private String cantidad;
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")

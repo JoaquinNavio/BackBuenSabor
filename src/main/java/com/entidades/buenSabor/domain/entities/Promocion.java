@@ -29,8 +29,6 @@ public class Promocion extends Base {
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
 
-    @OneToMany(mappedBy = "promocion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PromocionArticulo> articulos = new HashSet<>();
 
     @OneToMany
     @JoinColumn(name = "promocion_id")
