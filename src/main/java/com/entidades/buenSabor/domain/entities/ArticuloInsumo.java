@@ -22,8 +22,4 @@ public class ArticuloInsumo extends Articulo{
     private Integer stockMaximo;
     private Boolean esParaElaborar;
 
-    @OneToOne
-    private Image image;
-
-
 }

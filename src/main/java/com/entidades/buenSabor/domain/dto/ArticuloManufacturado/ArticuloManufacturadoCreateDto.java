@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.dto.ArticuloManufacturado;
 
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleCreateDto;
+import com.entidades.buenSabor.domain.entities.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class ArticuloManufacturadoCreateDto {
     private String preparacion;
     private Long idUnidadMedida;
     private Long idCategoria;
-    private Long idImage;
+    private Set<Image> imagenes;
     private Set<ArticuloManufacturadoDetalleCreateDto> detalles;
 }

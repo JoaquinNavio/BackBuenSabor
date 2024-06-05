@@ -89,9 +89,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         articuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         articuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
-        Image image = new Image();
+        /*Image image = new Image();
         image.setId(dto.getIdImage());
-        articuloManufacturado.setImage(image);
+        articuloManufacturado.setImage(image);*/
 
         // Guardar ArticuloManufacturado
         System.out.println("Guardando ArticuloManufacturado con save(articuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp");
@@ -153,7 +153,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         existingArticuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         existingArticuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
-        Long idImageToDelete = null;
+        /*Long idImageToDelete = null;
         if (existingArticuloManufacturado.getImage() != null && !existingArticuloManufacturado.getImage().getId().equals(dto.getIdImage())) {
             idImageToDelete = existingArticuloManufacturado.getImage().getId();
         }
@@ -163,7 +163,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             existingArticuloManufacturado.setImage(image);
         } else {
             existingArticuloManufacturado.setImage(null);
-        }
+        }*/
 
         // Guardar los cambios en el artículo manufacturado
         System.out.println("Guardando los cambios con save(existingArticuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp ");

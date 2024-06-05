@@ -23,7 +23,7 @@ public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufact
     que se debe utilizar un método llamado getById para obtener el valor del campo de origen.*/
     @Mapping(target = "unidadMedida", source = "idUnidadMedida",qualifiedByName = "getById")
     @Mapping(target = "categoria", source = "idCategoria",qualifiedByName = "getById")
-    @Mapping(target = "image", source = "idImage", qualifiedByName = "getById")
+    //@Mapping(target = "image", source = "idImage", qualifiedByName = "getById")
     /*toEntityCreate: Mapea un ArticuloManufacturadoCreateDto a una entidad ArticuloManufacturado.
     Usa servicios (CategoriaService, UnidadMedidaService, ImageService)
     para obtener objetos completos a partir de sus IDs.*/
@@ -32,7 +32,7 @@ public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufact
     @Override
     @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
-    @Mapping(target = "image", source = "idImage", qualifiedByName = "getById")
+    //@Mapping(target = "image", source = "idImage", qualifiedByName = "getById")
     //toUpdate: Similar a toEntityCreate, pero actualiza una entidad existente con los datos de un DTO de creación.
     ArticuloManufacturado toUpdate(@MappingTarget ArticuloManufacturado entity, ArticuloManufacturadoCreateDto source);
 
