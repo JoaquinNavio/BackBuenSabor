@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,6 +15,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 public class ImagenArticulo extends Base{
+
+    @Column(name = "name_image")
+    private String name;
+
+    @Column(name = "url_image")
     private String url;
 
     @ManyToOne

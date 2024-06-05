@@ -5,6 +5,7 @@ import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufact
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufact
 
     //Declaramos metodo createWithDetails en facade
     ArticuloManufacturado createWithDetails(ArticuloManufacturadoCreateDto dto);
+
+    ArticuloManufacturadoDto vincularImagenes(MultipartFile[] files, Long articuloId);
 
     //Declaramos metodo updateWithDetails en facade
     ArticuloManufacturado updateWithDetails(Long id,ArticuloManufacturadoCreateDto dto);

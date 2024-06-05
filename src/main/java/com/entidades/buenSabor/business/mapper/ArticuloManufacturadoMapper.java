@@ -1,7 +1,6 @@
 package com.entidades.buenSabor.business.mapper;
 
 import com.entidades.buenSabor.business.service.CategoriaService;
-import com.entidades.buenSabor.business.service.ImageService;
 import com.entidades.buenSabor.business.service.UnidadMedidaService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
@@ -13,7 +12,7 @@ import org.mapstruct.MappingTarget;
 /*@Mapper(componentModel = "spring", uses = {...}):
 Define que esta interfaz es un mapper de MapStruct y debe ser administrado por Spring.
 Indica los servicios que se utilizarán para mapear campos complejos.*/
-@Mapper(componentModel = "spring", uses = {CategoriaService.class,UnidadMedidaService.class, ImageService.class})
+@Mapper(componentModel = "spring", uses = {CategoriaService.class,UnidadMedidaService.class, ImagenArticuloMapper.class})
 public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto,ArticuloManufacturadoCreateDto> {
 
     /*@Mapping(target = "unidadMedida", source = "idUnidadMedida",qualifiedByName = "getById"):

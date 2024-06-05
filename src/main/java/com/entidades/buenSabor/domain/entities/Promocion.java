@@ -29,12 +29,13 @@ public class Promocion extends Base {
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
 
-
+    /*
     @OneToMany
     @JoinColumn(name = "promocion_id")
     @Builder.Default
     @NotAudited
     private Set<ImagenArticulo> imagenes = new HashSet<>();
+    */
 
     @ManyToMany(mappedBy = "promociones")
     private Set<Sucursal> sucursales = new HashSet<>();

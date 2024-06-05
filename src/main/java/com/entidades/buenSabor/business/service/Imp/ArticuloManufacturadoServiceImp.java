@@ -5,13 +5,13 @@ import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
-import com.entidades.buenSabor.domain.entities.Image;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -46,9 +46,8 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     @Autowired
     private CategoriaService categoriaService;
 
-    //Idem - sin usar
     @Autowired
-    private ImageService imageService;
+    private ImagenArticuloService imagenArticuloService;
 
     //Idem
     @Autowired
@@ -126,11 +125,19 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             return detalle;
         }).collect(Collectors.toList());
 
+
         // Guardar detalles
         System.out.println("Guardando detalles - ArticuloManufacturadoServiceImp");
         detalleRepository.saveAll(detalles);
         System.out.println("Retornando detalles - ArticuloManufacturadoServiceImp");
         return savedArticuloManufacturado;
+    }
+
+    @Override
+    public ArticuloManufacturado vincularImagenes(MultipartFile[] files, Long id) {
+        imagenArticuloService.vincularImagenesArticulo(files, id);
+        baseRepository.flush();
+        return baseRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontro el articuloManufacturado con id: " + id));
     }
 
     @Override
