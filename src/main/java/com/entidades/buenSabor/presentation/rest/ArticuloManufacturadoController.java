@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.presentation.rest;
 
+import com.entidades.buenSabor.business.facade.ArticuloManufacturadoFacade;
 import com.entidades.buenSabor.business.facade.Imp.ArticuloManufacturadoFacadeImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
@@ -10,6 +11,7 @@ import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
     * Convierte el ArticuloManufacturado creado a su DTO correspondiente.
     * Devuelve el DTO envuelto en un ResponseEntity con estado HTTP 201 CREATED.*/
     @PostMapping("/createWithDetails")
-    public ResponseEntity<ArticuloManufacturadoDto> createWithDetails(@RequestBody ArticuloManufacturadoCreateDto dto) {
+    public ResponseEntity<ArticuloManufacturadoDto> createWithDetails(@ModelAttribute ArticuloManufacturadoCreateDto dto) {
         System.out.println("INICIANDO CREATE WITH DETAILS createWithDetails(@RequestBody ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoController");
         System.out.println("Creando un nuevo ArticuloManufacturado llamando al método createWithDetails(DTO) del FACADE - ArticuloManufacturadoController");
         ArticuloManufacturado createdArticuloManufacturado = facade.createWithDetails(dto);
@@ -65,6 +67,12 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
         ArticuloManufacturadoDto createdDto = convertToDto(createdArticuloManufacturado);
         System.out.println("Devuelve el DTO creaado");
         return new ResponseEntity<>(createdDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/vincularImagenes")
+    public ResponseEntity<ArticuloManufacturadoDto> vincularImagenes(@PathVariable Long id, @RequestParam(value = "uploads", required = true) MultipartFile[] files) {
+
+        return new ResponseEntity<>(facade.vincularImagenes(files, id), HttpStatus.OK);
     }
 
     /*updateWithDetails(id): Maneja una solicitud PUT para actualizar un ArticuloManufacturado con detalles.

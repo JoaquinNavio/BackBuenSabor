@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -37,6 +38,7 @@ public abstract class Articulo extends Base {
     @Builder.Default
     /*@NotAudited: Excluye este campo del proceso de auditoría.*/
     @NotAudited
+    //@JsonIgnore
     protected Set<ImagenArticulo> imagenes = new HashSet<>();
 
     /*@ManyToOne: Relaciones muchos a uno con UnidadMedida y Categoria.*/
@@ -44,5 +46,6 @@ public abstract class Articulo extends Base {
     protected UnidadMedida unidadMedida;
 
     @ManyToOne
+    //@JsonIgnore
     protected Categoria categoria;
 }

@@ -11,6 +11,7 @@ import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufact
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,7 +26,6 @@ esta clase también implementa métodos adicionales específicos para manejar lo
 para la inyección de dependencias.*/
 @Service
 public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoCreateDto, Long> implements ArticuloManufacturadoFacade {
-
     /*Este atributo representa un mapper
     que se utilizará para convertir entidades de detalles de artículos manufacturados a DTOs y viceversa.*/
     private final ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper;
@@ -62,6 +62,11 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
         return ((ArticuloManufacturadoService) baseService).createWithDetails(dto);
     }
 
+    @Override
+    public ArticuloManufacturadoDto vincularImagenes(MultipartFile[] files, Long id) {
+        ArticuloManufacturado articuloManufacturado = ((ArticuloManufacturadoService) baseService).vincularImagenes(files, id);
+        return baseMapper.toDTO(articuloManufacturado);
+    }
     /*updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto):
     Este método sobrescrito de la interfaz ArticuloManufacturadoFacade
     actualiza un artículo manufacturado existente con nuevos detalles.

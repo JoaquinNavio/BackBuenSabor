@@ -5,16 +5,17 @@ import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
-import com.entidades.buenSabor.domain.entities.Image;
+import com.entidades.buenSabor.domain.entities.ImagenArticulo;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
+import com.entidades.buenSabor.repositories.ImagenArticuloRepository;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*BaseServiceImp:
@@ -46,9 +47,14 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     @Autowired
     private CategoriaService categoriaService;
 
-    //Idem - sin usar
     @Autowired
-    private ImageService imageService;
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private ImagenArticuloService imagenArticuloService;
+
+    @Autowired
+    private ImagenArticuloRepository imagenArticuloRepository;
 
     //Idem
     @Autowired
@@ -89,13 +95,36 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         articuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         articuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
-        Image image = new Image();
+        /*Image image = new Image();
         image.setId(dto.getIdImage());
-        articuloManufacturado.setImage(image);
+        articuloManufacturado.setImage(image);*/
 
         // Guardar ArticuloManufacturado
         System.out.println("Guardando ArticuloManufacturado con save(articuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp");
         ArticuloManufacturado savedArticuloManufacturado = baseRepository.save(articuloManufacturado);
+
+
+        Set<ImagenArticulo> imagenesArticulo = new HashSet<>();
+        try {
+            for (MultipartFile file : dto.getFiles()) {
+
+                ImagenArticulo imagenArticulo = new ImagenArticulo();
+                imagenArticulo.setName(file.getOriginalFilename());
+                imagenArticulo.setUrl(cloudinaryService.uploadFile(file));
+                ArticuloManufacturado articuloManufacturadoo = new ArticuloManufacturado();
+                articuloManufacturadoo.setId(articuloManufacturado.getId());
+                imagenArticulo.setArticulo(articuloManufacturadoo);
+
+                // Agregar la URL a la lista de URLs
+                imagenesArticulo.add(imagenArticuloRepository.save(imagenArticulo));
+            };
+            articuloManufacturado.setImagenes(imagenesArticulo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al guardar las imagenes de articulos");
+        }
+
+
 
         // Crear detalles y asociarlos
         /*
@@ -134,6 +163,13 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     }
 
     @Override
+    public ArticuloManufacturado vincularImagenes(MultipartFile[] files, Long id) {
+        imagenArticuloService.vincularImagenesArticulo(files, id);
+        baseRepository.flush();
+        return baseRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontro el articuloManufacturado con id: " + id));
+    }
+
+    @Override
     @Transactional
     public ArticuloManufacturado updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto) {
         System.out.println("EJECUTANDO updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoServiceImp");
@@ -153,7 +189,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         existingArticuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         existingArticuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
-        Long idImageToDelete = null;
+        /*Long idImageToDelete = null;
         if (existingArticuloManufacturado.getImage() != null && !existingArticuloManufacturado.getImage().getId().equals(dto.getIdImage())) {
             idImageToDelete = existingArticuloManufacturado.getImage().getId();
         }
@@ -163,7 +199,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             existingArticuloManufacturado.setImage(image);
         } else {
             existingArticuloManufacturado.setImage(null);
-        }
+        }*/
 
         // Guardar los cambios en el artículo manufacturado
         System.out.println("Guardando los cambios con save(existingArticuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp ");
