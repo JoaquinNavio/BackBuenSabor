@@ -24,5 +24,5 @@ public class ArticuloInsumoDto extends BaseDto {
     private Integer stockMaximo;
     private Boolean esParaElaborar;
     private CategoriaDto categoria;
-    private Set<ImagenArticuloDto> images ;
+    private Set<ImagenArticuloDto> imagenes;
 }

@@ -17,7 +17,7 @@ public class ArticuloInsumoController  extends BaseControllerImp<ArticuloInsumo,
     }
 
     @PostMapping("/crearCompleto")
-    public ResponseEntity<ArticuloInsumoDto> createCompleto(@RequestBody ArticuloInsumoCreateDto articuloDto){
+    public ResponseEntity<ArticuloInsumoDto> createCompleto(@ModelAttribute ArticuloInsumoCreateDto articuloDto){
         System.out.println("INICIO CREATE Articulo Insumo  - BaseController");
         return (facade.createCompleto(articuloDto));
     }

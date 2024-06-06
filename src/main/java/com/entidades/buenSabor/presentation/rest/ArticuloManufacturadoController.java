@@ -59,7 +59,7 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
     * Convierte el ArticuloManufacturado creado a su DTO correspondiente.
     * Devuelve el DTO envuelto en un ResponseEntity con estado HTTP 201 CREATED.*/
     @PostMapping("/createWithDetails")
-    public ResponseEntity<ArticuloManufacturadoDto> createWithDetails(@RequestBody ArticuloManufacturadoCreateDto dto) {
+    public ResponseEntity<ArticuloManufacturadoDto> createWithDetails(@ModelAttribute ArticuloManufacturadoCreateDto dto) {
         System.out.println("INICIANDO CREATE WITH DETAILS createWithDetails(@RequestBody ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoController");
         System.out.println("Creando un nuevo ArticuloManufacturado llamando al método createWithDetails(DTO) del FACADE - ArticuloManufacturadoController");
         ArticuloManufacturado createdArticuloManufacturado = facade.createWithDetails(dto);

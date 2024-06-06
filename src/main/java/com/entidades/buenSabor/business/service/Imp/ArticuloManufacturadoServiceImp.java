@@ -5,16 +5,17 @@ import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
+import com.entidades.buenSabor.domain.entities.ImagenArticulo;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
+import com.entidades.buenSabor.repositories.ImagenArticuloRepository;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*BaseServiceImp:
@@ -47,7 +48,13 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     private CategoriaService categoriaService;
 
     @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
     private ImagenArticuloService imagenArticuloService;
+
+    @Autowired
+    private ImagenArticuloRepository imagenArticuloRepository;
 
     //Idem
     @Autowired
@@ -96,6 +103,29 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         System.out.println("Guardando ArticuloManufacturado con save(articuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp");
         ArticuloManufacturado savedArticuloManufacturado = baseRepository.save(articuloManufacturado);
 
+
+        Set<ImagenArticulo> imagenesArticulo = new HashSet<>();
+        try {
+            for (MultipartFile file : dto.getFiles()) {
+
+                ImagenArticulo imagenArticulo = new ImagenArticulo();
+                imagenArticulo.setName(file.getOriginalFilename());
+                imagenArticulo.setUrl(cloudinaryService.uploadFile(file));
+                ArticuloManufacturado articuloManufacturadoo = new ArticuloManufacturado();
+                articuloManufacturadoo.setId(articuloManufacturado.getId());
+                imagenArticulo.setArticulo(articuloManufacturadoo);
+
+                // Agregar la URL a la lista de URLs
+                imagenesArticulo.add(imagenArticuloRepository.save(imagenArticulo));
+            };
+            articuloManufacturado.setImagenes(imagenesArticulo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al guardar las imagenes de articulos");
+        }
+
+
+
         // Crear detalles y asociarlos
         /*
         * dto.getDetalles():
@@ -124,7 +154,6 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             detalle.setArticuloManufacturado(savedArticuloManufacturado);
             return detalle;
         }).collect(Collectors.toList());
-
 
         // Guardar detalles
         System.out.println("Guardando detalles - ArticuloManufacturadoServiceImp");

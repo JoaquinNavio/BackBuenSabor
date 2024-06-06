@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoCreateDto> {
     @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
-    @Mapping(target = "imagenes", source = "images", qualifiedByName = "mapImages")
+    //@Mapping(target = "imagenes", source = "files", qualifiedByName = "mapImages")
     ArticuloInsumo toEntityCreate(ArticuloInsumoCreateDto source);
 
     @Override
@@ -30,6 +30,7 @@ public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, Articul
     ArticuloInsumo toUpdate(@MappingTarget ArticuloInsumo entity, ArticuloInsumoCreateDto source);
 
 
+    /*
     @Named("mapImages")
     default Set<ImagenArticulo> mapImages(Set<ImagenArticuloCreateDto> imageDtos) {
         if (imageDtos == null) {
@@ -50,10 +51,12 @@ public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, Articul
         return image;
     }
 
+     */
+
     @Override
     @Mapping(target = "unidadMedida", source = "unidadMedida")
     @Mapping(target = "categoria", source = "categoria")
-    @Mapping(target = "images", source = "imagenes", qualifiedByName = "mapImagesToDto")
+    @Mapping(target = "imagenes", source = "imagenes", qualifiedByName = "mapImagesToDto")
     ArticuloInsumoDto toDTO(ArticuloInsumo entity);
 
 
