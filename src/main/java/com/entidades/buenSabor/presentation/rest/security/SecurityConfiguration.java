@@ -46,8 +46,7 @@ public class SecurityConfiguration {
                 .cors(withDefaults()) //por defecto spring va a buscar un bean con el nombre "corsConfigurationSource".
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers(HttpMethod.GET).hasAuthority("User")
-                                .anyRequest().hasAuthority("Admin")
+                                .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer
@@ -66,7 +65,7 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(Arrays.asList(corsAllowedOrigins));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Access-Control-Allow-Origin"));
         configuration.setExposedHeaders(Arrays.asList("X-Get-Header"));
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

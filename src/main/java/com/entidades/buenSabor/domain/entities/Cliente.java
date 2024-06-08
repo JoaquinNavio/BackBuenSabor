@@ -20,9 +20,9 @@ import java.util.Set;
 //@Audited
 public class Cliente extends Persona{
 
-
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private String nombre;
+    /*@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    private Set<Pedido> pedidos = new HashSet<>();
+    private Set<Pedido> pedidos = new HashSet<>();*/
 }

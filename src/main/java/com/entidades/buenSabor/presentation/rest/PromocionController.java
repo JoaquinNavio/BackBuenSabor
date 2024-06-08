@@ -7,6 +7,7 @@ import com.entidades.buenSabor.domain.dto.Promocion.PromocionDetalleDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionDto;
 import com.entidades.buenSabor.domain.entities.Promocion;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     }
 
     @GetMapping("/{id}/Detalles")
-    public ResponseEntity<List<PromocionDetalleDto>> getDetallesById(@PathVariable Long id){
+    public ResponseEntity<List<PromocionDetalleDto>> getDetallesById(@PathVariable Long id) {
         return ResponseEntity.ok(facade.getDetallesById(id));
     }
 
-
     @PostMapping("/createWithDetails")
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<PromocionDto> createWithDetails(@RequestBody PromocionCreateDto dto) {
         Promocion createdPromocion = facade.createWithDetails(dto);
         PromocionDto createdDto = convertToDto(createdPromocion);
@@ -35,6 +36,7 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     }
 
     @PutMapping("/updateWithDetails/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<PromocionDto> updateWithDetails(@PathVariable Long id, @RequestBody PromocionCreateDto dto) {
         Promocion updatedPromocion = facade.updateWithDetails(id, dto);
         PromocionDto updatedDto = convertToDto(updatedPromocion);
@@ -52,7 +54,6 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
         dto.setDescripcionDescuento(promocion.getDescripcionDescuento());
         dto.setPrecioPromocional(promocion.getPrecioPromocional());
         dto.setTipoPromocion(promocion.getTipoPromocion());
-
         return dto;
     }
 }

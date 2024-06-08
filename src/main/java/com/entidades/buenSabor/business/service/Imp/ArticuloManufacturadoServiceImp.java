@@ -84,6 +84,14 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     public ArticuloManufacturado createWithDetails(ArticuloManufacturadoCreateDto dto) {
         System.out.println("EJECUTANDO createWithDetails(ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoServiceImp");
 
+        List<ArticuloManufacturadoDetalle> detalles = dto.getDetalles().stream().map(detalleDto -> {
+            ArticuloManufacturadoDetalle detalle = new ArticuloManufacturadoDetalle();
+            detalle.setCantidad(detalleDto.getCantidad());
+            detalle.setArticuloInsumo(articuloInsumoService.getById(detalleDto.getIdArticuloInsumo()));
+            return detalle;
+        }).collect(Collectors.toList());
+
+
         // Crear ArticuloManufacturado
         ArticuloManufacturado articuloManufacturado = new ArticuloManufacturado();
         System.out.println("Creo ArticuloManufactuado y seteo los datos del DTO - ArticuloManufacturadoServiceImp");
@@ -94,7 +102,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         articuloManufacturado.setPreparacion(dto.getPreparacion());
         articuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         articuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
-
+        Set<ArticuloManufacturadoDetalle> detallesSet = new HashSet<>(detalles);
+        articuloManufacturado.setDetalles(detallesSet);
+        articuloManufacturado.setDetalles(detallesSet);
         /*Image image = new Image();
         image.setId(dto.getIdImage());
         articuloManufacturado.setImage(image);*/
@@ -147,18 +157,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         que devuelve una lista de ArticuloManufacturadoDetalle.
         Esto significa que se crea una lista de objetos ArticuloManufacturadoDetalle,
         cada uno con los datos proporcionados en los DTO y asociados al artículo manufacturado recién creado.*/
-        List<ArticuloManufacturadoDetalle> detalles = dto.getDetalles().stream().map(detalleDto -> {
-            ArticuloManufacturadoDetalle detalle = new ArticuloManufacturadoDetalle();
-            detalle.setCantidad(detalleDto.getCantidad());
-            detalle.setArticuloInsumo(articuloInsumoService.getById(detalleDto.getIdArticuloInsumo()));
-            detalle.setArticuloManufacturado(savedArticuloManufacturado);
-            return detalle;
-        }).collect(Collectors.toList());
 
-        // Guardar detalles
-        System.out.println("Guardando detalles - ArticuloManufacturadoServiceImp");
-        detalleRepository.saveAll(detalles);
-        System.out.println("Retornando detalles - ArticuloManufacturadoServiceImp");
+
+
         return savedArticuloManufacturado;
     }
 

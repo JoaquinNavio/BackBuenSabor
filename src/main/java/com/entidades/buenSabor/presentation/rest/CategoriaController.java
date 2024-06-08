@@ -5,15 +5,44 @@ import com.entidades.buenSabor.domain.dto.Categoria.CategoriaCreateDto;
 import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
 import com.entidades.buenSabor.domain.entities.Categoria;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/categoria")
 @CrossOrigin("*")
 public class CategoriaController extends BaseControllerImp<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaCreateDto, Long, CategoriaFacadeImp> {
+
     public CategoriaController(CategoriaFacadeImp facade) {
         super(facade);
+    }
+
+    @GetMapping("/{id}")
+    @Override
+    public ResponseEntity<CategoriaDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(facade.getById(id));
+    }
+
+    @GetMapping
+    @Override
+    public ResponseEntity<List<CategoriaDto>> getAll() {
+        return ResponseEntity.ok(facade.getAll());
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
+    @Override
+    public ResponseEntity<CategoriaDto> create(@RequestBody CategoriaCreateDto entity) {
+        return ResponseEntity.ok(facade.createNew(entity));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
+    @Override
+    public ResponseEntity<CategoriaDto> edit(@RequestBody CategoriaCreateDto entity, @PathVariable Long id) {
+        return ResponseEntity.ok(facade.update(entity, id));
     }
 }
