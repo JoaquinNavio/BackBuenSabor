@@ -1,13 +1,17 @@
 package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.service.PedidoService;
+import com.entidades.buenSabor.domain.dto.MercadoPago.PedidoMP;
+import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.Pedido;
+import com.entidades.buenSabor.domain.entities.PreferenceMP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -19,26 +23,32 @@ public class PedidoController {
 
     @PostMapping("/crear")
     public ResponseEntity<String> crearPedido(@RequestBody Pedido pedido) {
-        pedidoService.savePedidoWithDetails(pedido);
+        Pedido createdPedido = pedidoService.savePedidoWithDetails(pedido);
         return new ResponseEntity<>("Pedido creado con éxito", HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Pedido>> obtenerTodosLosPedidos() {
-        List<Pedido> pedidos = pedidoService.getAllPedidos();
+    public ResponseEntity<List<PedidoDTO>> obtenerTodosLosPedidos() {
+        List<PedidoDTO> pedidos = pedidoService.getAllPedidoDTOs();
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> actualizarPedido(@PathVariable Long id, @RequestBody Pedido pedido) {
-        Pedido pedidoExistente = pedidoService.getPedidoById(id);
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<String> actualizarPedido(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        String estado = payload.get("estado");
+        Pedido pedidoExistente = pedidoService.updatePedido(id, estado);
         if (pedidoExistente != null) {
-            pedidoExistente.setEstado(pedido.getEstado());
-            // Actualiza otros campos necesarios
-            pedidoService.updatePedido(id, pedidoExistente);
             return new ResponseEntity<>("Pedido actualizado con éxito", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Pedido no encontrado", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/create_preference_mp")
+    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoMP pedido) {
+        MercadoPagoController cMercadoPago = new MercadoPagoController();
+        PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
+        return preference;
     }
 }

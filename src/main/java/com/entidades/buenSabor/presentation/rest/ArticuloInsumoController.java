@@ -9,6 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/ArticuloInsumo")
@@ -37,5 +39,11 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
     @Override
     public ResponseEntity<ArticuloInsumoDto> edit(@RequestBody ArticuloInsumoCreateDto entity, @PathVariable Long id) {
         return ResponseEntity.ok(facade.update(entity, id));
+    }
+
+    @GetMapping("/noElaborar")
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulosNoParaElaborar() {
+        List<ArticuloInsumoDto> articulos = facade.getArticulosNoParaElaborar();
+        return ResponseEntity.ok(articulos);
     }
 }

@@ -22,6 +22,12 @@ repositories {
 }
 
 dependencies {
+	implementation('com.mercadopago:sdk-java:2.1.7') {
+		exclude group: 'org.sonatype.sisu', module: 'sisu-guice'
+	}
+	implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-core'
 	implementation 'mysql:mysql-connector-java:8.0.28'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

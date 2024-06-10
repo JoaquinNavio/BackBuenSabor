@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,7 +94,9 @@ public abstract class BaseControllerImp <E extends Base,D extends BaseDto, DC, D
     * Registra una entrada en el log indicando el inicio del método.
     * Llama al método deleteById del facade para eliminar la entidad.
     * Devuelve una respuesta HTTP con estado 200 OK. */
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<?> deleteById(@PathVariable ID id){
         logger.info("INICIO DELETE BY ID deleteById(@PathVariable ID id) - BaseController");
         logger.info("Llamando a FACADE deleteById(id)  - BaseController");

@@ -84,14 +84,6 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     public ArticuloManufacturado createWithDetails(ArticuloManufacturadoCreateDto dto) {
         System.out.println("EJECUTANDO createWithDetails(ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoServiceImp");
 
-        List<ArticuloManufacturadoDetalle> detalles = dto.getDetalles().stream().map(detalleDto -> {
-            ArticuloManufacturadoDetalle detalle = new ArticuloManufacturadoDetalle();
-            detalle.setCantidad(detalleDto.getCantidad());
-            detalle.setArticuloInsumo(articuloInsumoService.getById(detalleDto.getIdArticuloInsumo()));
-            return detalle;
-        }).collect(Collectors.toList());
-
-
         // Crear ArticuloManufacturado
         ArticuloManufacturado articuloManufacturado = new ArticuloManufacturado();
         System.out.println("Creo ArticuloManufactuado y seteo los datos del DTO - ArticuloManufacturadoServiceImp");
@@ -102,17 +94,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         articuloManufacturado.setPreparacion(dto.getPreparacion());
         articuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         articuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
-        Set<ArticuloManufacturadoDetalle> detallesSet = new HashSet<>(detalles);
-        articuloManufacturado.setDetalles(detallesSet);
-        articuloManufacturado.setDetalles(detallesSet);
-        /*Image image = new Image();
-        image.setId(dto.getIdImage());
-        articuloManufacturado.setImage(image);*/
-
         // Guardar ArticuloManufacturado
         System.out.println("Guardando ArticuloManufacturado con save(articuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp");
         ArticuloManufacturado savedArticuloManufacturado = baseRepository.save(articuloManufacturado);
-
 
         Set<ImagenArticulo> imagenesArticulo = new HashSet<>();
         try {
@@ -134,32 +118,15 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             throw new RuntimeException("Error al guardar las imagenes de articulos");
         }
 
+        List<ArticuloManufacturadoDetalle> detalles = dto.getDetalles().stream().map(detalleDto -> {
+            ArticuloManufacturadoDetalle detalle = new ArticuloManufacturadoDetalle();
+            detalle.setCantidad(detalleDto.getCantidad());
+            detalle.setArticuloInsumo(articuloInsumoService.getById(detalleDto.getIdArticuloInsumo()));
+            detalle.setArticuloManufacturado(articuloManufacturado);
+            return detalle;
+        }).collect(Collectors.toList());
 
-
-        // Crear detalles y asociarlos
-        /*
-        * dto.getDetalles():
-        Este método devuelve una lista de ArticuloManufacturadoDetalleCreateDto,
-        que son los detalles de los artículos manufacturados proporcionados en el DTO de creación.
-        * .stream(): Convierte la lista de detalles en un stream,
-        lo que permite operar de forma secuencial o paralela en los elementos de la lista.
-        * .map(detalleDto -> { ... }): Para cada elemento del stream (es decir, para cada detalle del DTO),
-        se realiza una operación de mapeo que transforma
-        cada ArticuloManufacturadoDetalleCreateDto en un ArticuloManufacturadoDetalle.
-        Esto se hace utilizando una expresión lambda.
-        * Se crea una nueva instancia de ArticuloManufacturadoDetalle.
-        * detalle.setArticuloManufacturado(savedArticuloManufacturado):
-        Se establece el artículo manufacturado asociado al detalle.
-        En este caso, se asigna el artículo manufacturado que acabamos de guardar previamente
-        en el método createWithDetails.
-        * .collect(Collectors.toList()):
-        Finalmente, todos los detalles mapeados se recopilan en una lista usando Collectors.toList(),
-        que devuelve una lista de ArticuloManufacturadoDetalle.
-        Esto significa que se crea una lista de objetos ArticuloManufacturadoDetalle,
-        cada uno con los datos proporcionados en los DTO y asociados al artículo manufacturado recién creado.*/
-
-
-
+        detalleRepository.saveAll(detalles);
         return savedArticuloManufacturado;
     }
 

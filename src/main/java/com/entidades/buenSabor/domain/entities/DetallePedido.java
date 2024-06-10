@@ -1,10 +1,9 @@
 package com.entidades.buenSabor.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.envers.Audited;
 
 @Entity
 @AllArgsConstructor
@@ -13,8 +12,6 @@ import org.hibernate.envers.Audited;
 @Getter
 @ToString
 @SuperBuilder
-@JsonIgnoreProperties({"pedido"}) // Ignorar relaciones recursivas
-
 public class DetallePedido extends Base {
     private Integer cantidad;
     private Double subTotal;
@@ -25,6 +22,6 @@ public class DetallePedido extends Base {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonBackReference
     private Pedido pedido;
 }
-
