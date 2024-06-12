@@ -21,6 +21,24 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @GetMapping("/por-forma-pago")
+    public ResponseEntity<List<Map<String, Object>>> getPedidosPorFormaPago() {
+        List<Map<String, Object>> data = pedidoService.getPedidosPorFormaPago();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/por-mes")
+    public ResponseEntity<List<Map<String, Object>>> getPedidosPorMes() {
+        List<Map<String, Object>> data = pedidoService.getPedidosPorMes();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/por-articulo")
+    public ResponseEntity<List<Map<String, Object>>> getPedidosPorArticulo() {
+        List<Map<String, Object>> data = pedidoService.getPedidosPorArticulo();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
     @PostMapping("/crear")
     public ResponseEntity<String> crearPedido(@RequestBody Pedido pedido) {
         Pedido createdPedido = pedidoService.savePedidoWithDetails(pedido);

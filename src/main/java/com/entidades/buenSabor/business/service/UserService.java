@@ -1,6 +1,5 @@
 package com.entidades.buenSabor.business.service;
 
-import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.entities.User;
 import com.entidades.buenSabor.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService  {
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -19,8 +18,8 @@ public class UserService  {
         return userRepository.findById(id);
     }
 
-    public Optional<User> authenticate(String nombre, String contraseña) {
-        return userRepository.findByNombreAndContraseña(nombre, contraseña);
+    public Optional<User> authenticate(String gmail, String contraseña) {
+        return userRepository.findByGmailAndContraseña(gmail, contraseña);
     }
 
     public User save(User user) {
@@ -29,6 +28,10 @@ public class UserService  {
 
     public Optional<User> findByNombre(String nombre) {
         return userRepository.findByNombre(nombre);
+    }
+
+    public Optional<User> findByGmail(String gmail) {
+        return userRepository.findByGmail(gmail);
     }
 
     public List<User> getAllUsers() {
@@ -43,6 +46,7 @@ public class UserService  {
             userRepository.save(user);
         }
     }
+
     public User updateUserRole(Long id, String newRole) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isPresent()) {

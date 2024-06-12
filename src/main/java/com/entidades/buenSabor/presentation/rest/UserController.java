@@ -34,13 +34,14 @@ public class UserController {
         String encryptedPassword = encryptPassword(user.getContraseña());
         user.setContraseña(encryptedPassword);
 
-        Optional<User> optionalUser = userService.authenticate(user.getNombre(), user.getContraseña());
+        Optional<User> optionalUser = userService.authenticate(user.getGmail(), user.getContraseña());
 
         if (optionalUser.isPresent()) {
             User authenticatedUser = optionalUser.get();
             Map<String, Object> response = new HashMap<>();
             response.put("id", authenticatedUser.getId());
             response.put("nombre", authenticatedUser.getNombre());
+            response.put("gmail", authenticatedUser.getGmail());
             response.put("rol", authenticatedUser.getRol());
 
             return ResponseEntity.ok(response);
@@ -50,13 +51,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
+        // Verificar que el gmail sea único
+        if (userService.findByGmail(user.getGmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Gmail ya registrado");
+        }
+
         // Encriptar la contraseña con SHA-256
         String encryptedPassword = encryptPassword(user.getContraseña());
         user.setContraseña(encryptedPassword);
         user.setRol("user"); // Asignar rol por defecto
 
-        return userService.save(user);
+        User savedUser = userService.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping("/getUserByUsername")
@@ -80,7 +87,6 @@ public class UserController {
             return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
         }
     }
-
 
     private String encryptPassword(String password) {
         try {
