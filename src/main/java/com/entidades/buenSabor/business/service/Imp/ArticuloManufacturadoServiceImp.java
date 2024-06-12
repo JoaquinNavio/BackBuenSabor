@@ -1,8 +1,13 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.mapper.BaseMapper;
+import com.entidades.buenSabor.business.mapper.CategoriaMapper;
+import com.entidades.buenSabor.business.mapper.UnidadMedidaMapper;
 import com.entidades.buenSabor.business.service.*;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEcommerseDto;
+import com.entidades.buenSabor.domain.dto.Insumo.ImagenArticuloDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import com.entidades.buenSabor.domain.entities.ImagenArticulo;
@@ -59,6 +64,12 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     //Idem
     @Autowired
     private ArticuloInsumoService articuloInsumoService;
+
+    @Autowired
+    private UnidadMedidaMapper unidadMedidaMapper;
+
+    @Autowired
+    private CategoriaMapper categoriaMapper;
 
     /*getDetallesById(Long id):
     Este método devuelve una lista de detalles de artículo manufacturado
@@ -202,6 +213,63 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         detalleRepository.saveAll(nuevosDetalles);
         System.out.println("Retornando detalles - ArticuloManufacturadoServiceImp");
         return updatedArticuloManufacturado;
+    }
+
+    @Override
+    public List<ArticuloManufacturadoEcommerseDto> getManufacturadosEcommerse() {
+        List<ArticuloManufacturado> articulosManufacturados = baseRepository.getAll();
+        List<ArticuloManufacturadoEcommerseDto> articuloEcommerseDtos = new ArrayList<>();
+
+        for (ArticuloManufacturado articulo : articulosManufacturados) {
+            ArticuloManufacturadoEcommerseDto articuloEcommerse = new ArticuloManufacturadoEcommerseDto();
+            articuloEcommerse.setId(articulo.getId());
+            articuloEcommerse.setDenominacion(articulo.getDenominacion());
+            articuloEcommerse.setDescripcion(articulo.getDescripcion());
+            articuloEcommerse.setTiempoEstimadoMinutos(articulo.getTiempoEstimadoMinutos());
+            articuloEcommerse.setPrecioVenta(articulo.getPrecioVenta());
+            articuloEcommerse.setPreparacion(articulo.getPreparacion());
+            System.out.println("Llega hasta acá");
+
+            articuloEcommerse.setImagenes(getImagenesDto(articulo.getImagenes()));
+            System.out.println("converti las imagenes a dto");
+            articuloEcommerse.setUnidadMedida(unidadMedidaMapper.toDTO(articulo.getUnidadMedida()));
+            articuloEcommerse.setCategoria(categoriaMapper.toDTO(articulo.getCategoria()));
+            System.out.println("converti las demas entidades a dto");
+            List<ArticuloManufacturadoDetalle> detalles = baseRepository.findDetallesById(articulo.getId());
+            articuloEcommerse.setStock(getStock(detalles));
+
+            articuloEcommerseDtos.add(articuloEcommerse);
+        }
+
+        return articuloEcommerseDtos;
+    }
+
+    private Integer getStock(List<ArticuloManufacturadoDetalle> detalles) {
+        Integer stock = 0;
+        boolean primeraVuelta = true;
+
+        for (ArticuloManufacturadoDetalle detalle : detalles) {
+            if (primeraVuelta) {
+                stock = detalle.getArticuloInsumo().getStockActual();
+                primeraVuelta = false;
+            } else {
+                if (detalle.getArticuloInsumo().getStockActual() < stock) {
+                    stock = detalle.getArticuloInsumo().getStockActual();
+                }
+            }
+        }
+        return stock;
+    }
+
+    private Set<ImagenArticuloDto> getImagenesDto(Set<ImagenArticulo> imagenes){
+        Set<ImagenArticuloDto> imagenesDto = new HashSet<>();
+        for (ImagenArticulo imagen : imagenes) {
+            ImagenArticuloDto imagenDto = new ImagenArticuloDto();
+            imagenDto.setId(imagen.getId());
+            imagenDto.setUrl(imagen.getUrl());
+            imagenesDto.add(imagenDto);
+        }
+        return imagenesDto;
     }
 
 }
