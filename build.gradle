@@ -22,6 +22,12 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.apache.commons:commons-email:1.5'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.itextpdf:itext7-core:8.0.1'
+	implementation 'org.apache.poi:poi-ooxml:5.2.3'
+	implementation 'org.apache.poi:poi:5.2.3'
+	implementation 'org.apache.xmlbeans:xmlbeans:5.1.1'
 	implementation('com.mercadopago:sdk-java:2.1.7') {
 		exclude group: 'org.sonatype.sisu', module: 'sisu-guice'
 	}
@@ -32,24 +38,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	annotationProcessor 'org.projectlombok:lombok', 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.json:json:20210307'
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	annotationProcessor 'org.projectlombok:lombok', 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.hibernate.orm:hibernate-envers:6.4.4.Final'
 	implementation 'com.cloudinary:cloudinary-http44:1.36.0'
 	implementation 'com.cloudinary:cloudinary-taglib:1.36.0'
@@ -71,5 +68,5 @@ tasks.jar {
 }
 
 bootJar {
-	enabled=true
+	enabled = true
 }

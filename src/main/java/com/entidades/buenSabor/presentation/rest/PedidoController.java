@@ -1,15 +1,23 @@
 package com.entidades.buenSabor.presentation.rest;
 
+import com.entidades.buenSabor.business.service.EmailService;
 import com.entidades.buenSabor.business.service.PedidoService;
-import com.entidades.buenSabor.domain.dto.MercadoPago.PedidoMP;
 import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.Pedido;
-import com.entidades.buenSabor.domain.entities.PreferenceMP;
+import com.entidades.buenSabor.domain.entities.PedidoPrintManager;
+import org.apache.commons.mail.EmailException;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +26,8 @@ import java.util.Map;
 @CrossOrigin("*")
 public class PedidoController {
 
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private PedidoService pedidoService;
 
@@ -66,11 +76,29 @@ public class PedidoController {
         }
     }
 
-    @CrossOrigin(origins = "*")
-    @PostMapping("/create_preference_mp")
-    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoMP pedido) {
-        MercadoPagoController cMercadoPago = new MercadoPagoController();
-        PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
-        return preference;
+    @GetMapping("/generarExcel")
+    public ResponseEntity<String> generarExcel(@RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+                                               @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+                                               @RequestParam(value = "email", required = false) String email) {
+        try {
+            List<Pedido> pedidos = pedidoService.getPedidosByDateRange(fechaInicio, fechaFin);
+
+            if (pedidos.isEmpty()) {
+                return new ResponseEntity<>("No hay pedidos entre las fechas dadas.", HttpStatus.NO_CONTENT);
+            }
+
+            if (email != null && !email.isEmpty()) {
+                PedidoPrintManager mPrintPedido = new PedidoPrintManager(pedidoService, emailService);
+                mPrintPedido.enviarExcelPorEmail(pedidos, email, "Reporte de Pedidos", "Adjunto se encuentra el reporte de pedidos en el rango de fechas especificado.");
+                return new ResponseEntity<>("El archivo Excel se ha enviado por correo electrónico.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No se ha proporcionado un correo electrónico para enviar el archivo.", HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (IOException | EmailException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 }
