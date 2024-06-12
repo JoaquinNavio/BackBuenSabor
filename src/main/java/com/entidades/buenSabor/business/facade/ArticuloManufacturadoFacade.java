@@ -3,6 +3,7 @@ package com.entidades.buenSabor.business.facade;
 import com.entidades.buenSabor.business.facade.Base.BaseFacade;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEcommerseDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,4 +27,6 @@ public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufact
 
     //Declaramos metodo updateWithDetails en facade
     ArticuloManufacturado updateWithDetails(Long id,ArticuloManufacturadoCreateDto dto);
+
+    List<ArticuloManufacturadoEcommerseDto> getManufacturadosEcommerse();
 }

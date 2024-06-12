@@ -2,6 +2,7 @@ package com.entidades.buenSabor.business.service;
 
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEcommerseDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,5 +28,7 @@ public interface ArticuloManufacturadoService extends BaseService<ArticuloManufa
     Actualiza un artículo manufacturado existente, incluidos sus detalles,
     utilizando los datos proporcionados en un DTO de creación.*/
     ArticuloManufacturado updateWithDetails(Long id,ArticuloManufacturadoCreateDto dto);
+
+    List<ArticuloManufacturadoEcommerseDto> getManufacturadosEcommerse();
 
 }

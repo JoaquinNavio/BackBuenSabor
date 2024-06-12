@@ -8,8 +8,10 @@ import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEcommerseDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +31,7 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
     /*Este atributo representa un mapper
     que se utilizará para convertir entidades de detalles de artículos manufacturados a DTOs y viceversa.*/
     private final ArticuloManufacturadoDetalleMapper articuloManufacturadoDetalleMapper;
+
 
     /*Este constructor recibe tres parámetros:
     * baseService: Un servicio que maneja operaciones CRUD en entidades de tipo ArticuloManufacturado.
@@ -76,4 +79,12 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
         System.out.println("EJECUTANDO updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto) SOBREESCRITO - ArticuloManufacturadoFacadeImp");
         return ((ArticuloManufacturadoService) baseService).updateWithDetails(id, dto);
     }
+
+    @Override
+    public List<ArticuloManufacturadoEcommerseDto> getManufacturadosEcommerse() {
+        System.out.println("entro al facade");
+       return ((ArticuloManufacturadoService) baseService).getManufacturadosEcommerse() ;
+    }
+
+
 }

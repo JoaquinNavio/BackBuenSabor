@@ -3,7 +3,9 @@ package com.entidades.buenSabor.presentation.rest;
 import com.entidades.buenSabor.business.facade.Imp.ArticuloManufacturadoFacadeImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
+import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEcommerseDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
+import com.entidades.buenSabor.domain.dto.Insumo.ArticuloInsumoDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,6 +60,13 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
     @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloManufacturadoDto> vincularImagenes(@PathVariable Long id, @RequestParam(value = "uploads", required = true) MultipartFile[] files) {
         return new ResponseEntity<>(facade.vincularImagenes(files, id), HttpStatus.OK);
+    }
+
+    @GetMapping("/Ecommerse")
+    public ResponseEntity<List<ArticuloManufacturadoEcommerseDto>> getManufacturadoEcommerse() {
+        System.out.println("entro al controlador");
+        List<ArticuloManufacturadoEcommerseDto> articulos = facade.getManufacturadosEcommerse();
+        return ResponseEntity.ok(articulos);
     }
 
     private ArticuloManufacturadoDto convertToDto(ArticuloManufacturado articuloManufacturado) {
