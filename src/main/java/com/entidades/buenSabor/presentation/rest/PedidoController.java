@@ -41,8 +41,12 @@ public class PedidoController {
 
     @PostMapping("/crear")
     public ResponseEntity<String> crearPedido(@RequestBody Pedido pedido) {
-        Pedido createdPedido = pedidoService.savePedidoWithDetails(pedido);
-        return new ResponseEntity<>("Pedido creado con éxito", HttpStatus.CREATED);
+        try {
+            Pedido createdPedido = pedidoService.savePedidoWithDetails(pedido);
+            return new ResponseEntity<>("Pedido creado con éxito", HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping
