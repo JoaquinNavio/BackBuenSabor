@@ -7,10 +7,13 @@ import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.entities.PedidoPrintManager;
 import com.entidades.buenSabor.domain.entities.PreferenceMP;
+import com.itextpdf.io.source.ByteArrayOutputStream;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -103,5 +106,35 @@ public class PedidoController {
         MercadoPagoController cMercadoPago = new MercadoPagoController();
         PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
         return preference;
+    }
+
+
+    @GetMapping("/generatePDF/{pedidoId}")
+    public ResponseEntity<byte[]> generatePDF(@PathVariable("pedidoId") Long pedidoId) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            pedidoService.generatePedidoPDF(pedidoId, outputStream);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "factura.pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/enviarPDF")
+    public ResponseEntity<String> enviarPDF(@RequestParam Long pedidoId, @RequestParam String email) {
+        try {
+            pedidoService.generarYEnviarPDF(pedidoId, email);
+            return new ResponseEntity<>("El PDF de la factura se ha enviado por correo electrónico.", HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al generar o enviar el PDF.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

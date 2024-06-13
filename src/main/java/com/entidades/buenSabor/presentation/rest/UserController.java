@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.presentation.rest;
 
+import com.entidades.buenSabor.business.service.PedidoService;
 import com.entidades.buenSabor.business.service.UserService;
 import com.entidades.buenSabor.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -103,4 +105,7 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }

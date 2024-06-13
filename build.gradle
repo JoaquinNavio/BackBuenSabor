@@ -22,9 +22,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.itextpdf:itext7-core:7.1.15'
 	implementation 'org.apache.commons:commons-email:1.5'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.itextpdf:itext7-core:8.0.1'
 	implementation 'org.apache.poi:poi-ooxml:5.2.3'
 	implementation 'org.apache.poi:poi:5.2.3'
 	implementation 'org.apache.xmlbeans:xmlbeans:5.1.1'

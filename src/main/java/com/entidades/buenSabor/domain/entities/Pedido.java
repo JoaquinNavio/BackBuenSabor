@@ -29,12 +29,10 @@ public class Pedido extends Base {
     private TipoEnvio tipoEnvio;
     private FormaPago formaPago;
     private LocalDate fechaPedido;
+    private String domicilio;
 
-    @ManyToOne
-    private Domicilio domicilio;
 
-    @ManyToOne
-    private Sucursal sucursal;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     private Factura factura;
@@ -51,5 +49,9 @@ public class Pedido extends Base {
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
+
+    /*
+    @ManyToOne
+    private Domicilio domicilio;*/
 
 }
