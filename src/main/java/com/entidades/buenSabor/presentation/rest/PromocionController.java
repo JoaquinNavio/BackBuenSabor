@@ -2,6 +2,7 @@ package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.facade.Imp.PromocionFacadeImp;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
+import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionCreateDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionDetalleDto;
 import com.entidades.buenSabor.domain.dto.Promocion.PromocionDto;
@@ -26,6 +27,13 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     public ResponseEntity<List<PromocionDetalleDto>> getDetallesById(@PathVariable Long id) {
         return ResponseEntity.ok(facade.getDetallesById(id));
     }
+
+    @GetMapping("/{id}")
+    @Override
+    public ResponseEntity<PromocionDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(facade.getById(id));
+    }
+
 
     @PostMapping("/createWithDetails")
     @PreAuthorize("hasAuthority('Admin')")
