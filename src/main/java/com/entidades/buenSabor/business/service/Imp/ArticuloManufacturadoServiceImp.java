@@ -228,13 +228,12 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             articuloEcommerse.setTiempoEstimadoMinutos(articulo.getTiempoEstimadoMinutos());
             articuloEcommerse.setPrecioVenta(articulo.getPrecioVenta());
             articuloEcommerse.setPreparacion(articulo.getPreparacion());
-            System.out.println("Llega hasta acá");
 
             articuloEcommerse.setImagenes(getImagenesDto(articulo.getImagenes()));
-            System.out.println("converti las imagenes a dto");
+
             articuloEcommerse.setUnidadMedida(unidadMedidaMapper.toDTO(articulo.getUnidadMedida()));
             articuloEcommerse.setCategoria(categoriaMapper.toDTO(articulo.getCategoria()));
-            System.out.println("converti las demas entidades a dto");
+
             List<ArticuloManufacturadoDetalle> detalles = baseRepository.findDetallesById(articulo.getId());
             articuloEcommerse.setStock(getStock(detalles));
 
@@ -245,20 +244,21 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     }
 
     private Integer getStock(List<ArticuloManufacturadoDetalle> detalles) {
-        Integer stock = 0;
-        boolean primeraVuelta = true;
+        List<Integer> stock = new ArrayList<>();
 
         for (ArticuloManufacturadoDetalle detalle : detalles) {
-            if (primeraVuelta) {
-                stock = detalle.getArticuloInsumo().getStockActual();
-                primeraVuelta = false;
-            } else {
-                if (detalle.getArticuloInsumo().getStockActual() < stock) {
-                    stock = detalle.getArticuloInsumo().getStockActual();
-                }
+            if (detalle.getArticuloInsumo().getStockActual() < detalle.getCantidad()) {
+                return 0;
             }
+            stock.add(Math.floorDiv(detalle.getArticuloInsumo().getStockActual(), detalle.getCantidad()));
         }
-        return stock;
+
+        if (stock.isEmpty()) {
+            return 0;
+        }
+
+        // Retornar el número más bajo del stock
+        return Collections.min(stock);
     }
 
     private Set<ImagenArticuloDto> getImagenesDto(Set<ImagenArticulo> imagenes){
