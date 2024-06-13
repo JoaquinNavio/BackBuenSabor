@@ -180,8 +180,11 @@ public class PedidoService {
                 Factura factura = existingPedido.getFactura();
                 if (factura != null) {
                     factura.setPagado(true); // Actualiza el campo pagado a true
+                    factura.setMpPaymentId(UUID.randomUUID().toString());//numero aleatorio y unico
+                    existingPedido.setFactura(factura);
                 }
             }
+
             existingPedido.setEstado(nuevoEstado);
             return pedidoRepository.save(existingPedido);
         }

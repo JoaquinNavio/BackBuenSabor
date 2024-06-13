@@ -2,9 +2,11 @@ package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.service.EmailService;
 import com.entidades.buenSabor.business.service.PedidoService;
+import com.entidades.buenSabor.domain.dto.MercadoPago.PedidoMP;
 import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.entities.PedidoPrintManager;
+import com.entidades.buenSabor.domain.entities.PreferenceMP;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -93,5 +95,13 @@ public class PedidoController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/create_preference_mp")
+    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoMP pedido) {
+        MercadoPagoController cMercadoPago = new MercadoPagoController();
+        PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
+        return preference;
     }
 }

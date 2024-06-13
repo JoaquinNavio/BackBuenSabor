@@ -16,7 +16,6 @@ import java.util.Set;
 @Setter
 @Getter
 @SuperBuilder
-@ToString
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -27,30 +26,32 @@ import java.util.Set;
         @JsonSubTypes.Type(value = ArticuloInsumo.class, name = "articuloInsumo")
 })
 @JsonIgnoreProperties({"imagenes", "unidadMedida", "categoria"}) // Ignorar relaciones recursivas
-
 public abstract class Articulo extends Base {
 
-    /*denominacion y precioVenta: Atributos básicos del artículo.*/
     protected String denominacion;
     protected Double precioVenta;
 
-
-    /*@OneToMany: Relación uno a muchos con ImagenArticulo.
-    @JoinColumn(name = "articulo_id") especifica la columna de unión en la tabla ImagenArticulo.*/
     @OneToMany
     @JoinColumn(name = "articulo_id")
-    /*@Builder.Default: Establece un valor predeterminado para el builder.*/
     @Builder.Default
-    /*@NotAudited: Excluye este campo del proceso de auditoría.*/
     @NotAudited
     @JsonManagedReference // Agregar esta anotación
     protected Set<ImagenArticulo> imagenes = new HashSet<>();
 
-    /*@ManyToOne: Relaciones muchos a uno con UnidadMedida y Categoria.*/
     @ManyToOne
     protected UnidadMedida unidadMedida;
 
     @ManyToOne
     //@JsonIgnore
     protected Categoria categoria;
+
+    @Override
+    public String toString() {
+        return "Articulo{" +
+                "id=" + getId() +
+                ", denominacion='" + denominacion + '\'' +
+                ", precioVenta=" + precioVenta +
+                // Omitiendo relaciones para evitar recursión infinita
+                '}';
+    }
 }

@@ -14,11 +14,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "articulo") // Excluir la relación recursiva
 @SuperBuilder
 @JsonIgnoreProperties({"articulo"}) // Ignorar relaciones recursivas
-
-public class ImagenArticulo extends Base{
+public class ImagenArticulo extends Base {
 
     @Column(name = "name_image")
     private String name;
