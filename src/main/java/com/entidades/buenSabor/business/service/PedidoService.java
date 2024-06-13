@@ -1,5 +1,7 @@
 package com.entidades.buenSabor.business.service;
 
+import com.entidades.buenSabor.domain.dto.DetallePedidoDTO;
+import com.entidades.buenSabor.domain.dto.FacturaDTO;
 import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.Estado;
@@ -13,12 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,10 +33,9 @@ public class PedidoService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
-    //charts
+    // Charts
     public List<Map<String, Object>> getPedidosPorFormaPago() {
         List<Pedido> pedidos = getAllPedidos();
-
         return pedidos.stream()
                 .collect(Collectors.groupingBy(Pedido::getFormaPago, Collectors.counting()))
                 .entrySet()
@@ -55,7 +51,6 @@ public class PedidoService {
 
     public List<Map<String, Object>> getPedidosPorMes() {
         List<Pedido> pedidos = getAllPedidos();
-
         return pedidos.stream()
                 .collect(Collectors.groupingBy(p -> p.getFechaPedido().getMonth(), Collectors.counting()))
                 .entrySet()
@@ -71,7 +66,6 @@ public class PedidoService {
 
     public List<Map<String, Object>> getPedidosPorArticulo() {
         List<Pedido> pedidos = getAllPedidos();
-
         Map<String, Integer> conteoArticulos = new HashMap<>();
         pedidos.forEach(pedido -> {
             pedido.getDetallePedidos().forEach(detalle -> {
@@ -79,7 +73,6 @@ public class PedidoService {
                 conteoArticulos.put(articulo, conteoArticulos.getOrDefault(articulo, 0) + detalle.getCantidad());
             });
         });
-
         return conteoArticulos.entrySet()
                 .stream()
                 .map(entry -> {
@@ -90,8 +83,6 @@ public class PedidoService {
                 })
                 .collect(Collectors.toList());
     }
-
-
 
     @Transactional
     public Pedido savePedidoWithDetails(Pedido pedido) {
@@ -109,28 +100,21 @@ public class PedidoService {
         }
 
         pedido.setFactura(factura);
-
-        // Validar stock antes de guardar el pedido
         validarYActualizarStock(pedido);
 
         Pedido savedPedido = pedidoRepository.save(pedido);
-
         for (DetallePedido detalle : pedido.getDetallePedidos()) {
             detalle.setPedido(savedPedido);
             detallePedidoRepository.save(detalle);
         }
-
         return savedPedido;
     }
 
     private void validarYActualizarStock(Pedido pedido) {
         Map<Long, Integer> stockRequerido = new HashMap<>();
-
         for (DetallePedido detalle : pedido.getDetallePedidos()) {
             Long articuloId = detalle.getArticulo().getId();
             int cantidad = detalle.getCantidad();
-
-            // Identificar si es articuloInsumo o articuloManufacturado
             Articulo articulo = findArticuloById(articuloId);
             if (articulo instanceof ArticuloInsumo) {
                 stockRequerido.merge(articuloId, cantidad, Integer::sum);
@@ -144,7 +128,6 @@ public class PedidoService {
             }
         }
 
-        // Verificar y actualizar stock
         for (Map.Entry<Long, Integer> entry : stockRequerido.entrySet()) {
             ArticuloInsumo insumo = articuloInsumoRepository.findById(entry.getKey())
                     .orElseThrow(() -> new RuntimeException("ArticuloInsumo no encontrado: " + entry.getKey()));
@@ -170,17 +153,9 @@ public class PedidoService {
         throw new RuntimeException("Articulo no encontrado: " + id);
     }
 
-
-
-
-
-
     public List<Pedido> getPedidosByDateRange(LocalDate fechaInicio, LocalDate fechaFin) {
         return pedidoRepository.findByFechaPedidoBetween(fechaInicio, fechaFin);
     }
-
-
-
 
     public List<Pedido> getAllPedidos() {
         return pedidoRepository.findAll();
@@ -196,34 +171,41 @@ public class PedidoService {
         return pedidoRepository.findById(id).orElse(null);
     }
 
-    //metodo para cambiar el estado del pedido
     @Transactional
     public Pedido updatePedido(Long id, String estado) {
         Pedido existingPedido = getPedidoById(id);
         if (existingPedido != null) {
             Estado nuevoEstado = Estado.valueOf(estado);
-
             if (nuevoEstado == Estado.ENTREGADO && existingPedido.getEstado() == Estado.PENDIENTE_ENTREGA_PAGO_EFECTIVO) {
                 Factura factura = existingPedido.getFactura();
                 if (factura != null) {
                     factura.setPagado(true); // Actualiza el campo pagado a true
                 }
             }
-
             existingPedido.setEstado(nuevoEstado);
             return pedidoRepository.save(existingPedido);
         }
         return null;
     }
 
-
-    //metodo creado para no usar los mapers
     private PedidoDTO convertToDTO(Pedido pedido) {
         PedidoDTO dto = new PedidoDTO();
         dto.setId(pedido.getId());
         dto.setEstado(pedido.getEstado());
         dto.setClienteId(pedido.getUser().getId());
         dto.setClienteNombre(pedido.getUser().getNombre());
+
+        // Convertir detallePedidos a DetallePedidoDTO
+        List<DetallePedidoDTO> detallesDTO = pedido.getDetallePedidos().stream()
+                .map(detalle -> new DetallePedidoDTO(detalle.getId(), detalle.getCantidad(), detalle.getSubTotal(), detalle.getArticulo().getDenominacion()))
+                .collect(Collectors.toList());
+        dto.setDetallePedidos(detallesDTO);
+
+        // Convertir factura a FacturaDTO
+        Factura factura = pedido.getFactura();
+        FacturaDTO facturaDTO = new FacturaDTO(factura.getId(), factura.getFechaFcturacion(), factura.getMpPaymentId(), factura.getTotalVenta(), factura.getPagado());
+        dto.setFactura(facturaDTO);
+
         return dto;
     }
 }

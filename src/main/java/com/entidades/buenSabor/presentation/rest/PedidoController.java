@@ -6,16 +6,12 @@ import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.entities.PedidoPrintManager;
 import org.apache.commons.mail.EmailException;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +24,7 @@ public class PedidoController {
 
     @Autowired
     private EmailService emailService;
+
     @Autowired
     private PedidoService pedidoService;
 
@@ -82,11 +79,9 @@ public class PedidoController {
                                                @RequestParam(value = "email", required = false) String email) {
         try {
             List<Pedido> pedidos = pedidoService.getPedidosByDateRange(fechaInicio, fechaFin);
-
             if (pedidos.isEmpty()) {
                 return new ResponseEntity<>("No hay pedidos entre las fechas dadas.", HttpStatus.NO_CONTENT);
             }
-
             if (email != null && !email.isEmpty()) {
                 PedidoPrintManager mPrintPedido = new PedidoPrintManager(pedidoService, emailService);
                 mPrintPedido.enviarExcelPorEmail(pedidos, email, "Reporte de Pedidos", "Adjunto se encuentra el reporte de pedidos en el rango de fechas especificado.");
@@ -94,11 +89,9 @@ public class PedidoController {
             } else {
                 return new ResponseEntity<>("No se ha proporcionado un correo electrónico para enviar el archivo.", HttpStatus.BAD_REQUEST);
             }
-
         } catch (IOException | EmailException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
