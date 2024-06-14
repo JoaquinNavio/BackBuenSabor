@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     List<Pedido> findByFechaPedidoBetween(LocalDate fechaInicio, LocalDate fechaFin);
-
+    Pedido findTopByOrderByIdDesc();
 }

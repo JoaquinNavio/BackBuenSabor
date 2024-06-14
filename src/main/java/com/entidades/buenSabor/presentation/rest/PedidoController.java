@@ -160,4 +160,13 @@ public class PedidoController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+
+    @GetMapping("/ultimo")
+    public ResponseEntity<PedidoDTO> obtenerUltimoPedido() {
+        PedidoDTO ultimoPedido = pedidoService.getUltimoPedido();
+        return new ResponseEntity<>(ultimoPedido, HttpStatus.OK);
+    }
 }
