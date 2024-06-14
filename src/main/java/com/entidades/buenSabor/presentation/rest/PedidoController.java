@@ -9,6 +9,7 @@ import com.entidades.buenSabor.domain.entities.PedidoPrintManager;
 import com.entidades.buenSabor.domain.entities.PreferenceMP;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import org.apache.commons.mail.EmailException;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -78,6 +79,7 @@ public class PedidoController {
         }
     }
 
+    //EXCEL QUE SE ENVIA POR MAIL CON LOS PEDIDOS ENTRE DOS FECHAS
     @GetMapping("/generarExcel")
     public ResponseEntity<String> generarExcel(@RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
                                                @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
@@ -135,6 +137,27 @@ public class PedidoController {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error al generar o enviar el PDF.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //EXCEL QUE SE DESCARGA LOCALMENTE CON LOS CHARTS
+    @GetMapping("/generarExcelCompleto")
+    public ResponseEntity<byte[]> generarExcelCompleto() {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            Workbook workbook = pedidoService.generarExcelCompleto();
+            workbook.write(bos);
+            workbook.close();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", "ReporteCompleto.xlsx");
+            headers.setContentLength(bos.size());
+
+            return new ResponseEntity<>(bos.toByteArray(), headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

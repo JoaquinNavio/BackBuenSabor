@@ -27,6 +27,9 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.UnitValue;
 
 import org.apache.commons.mail.EmailException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +58,7 @@ public class PedidoService {
 
     @Autowired
     private EmailService emailService;
+
     // Charts
     public List<Map<String, Object>> getPedidosPorFormaPago() {
         List<Pedido> pedidos = getAllPedidos();
@@ -175,10 +179,6 @@ public class PedidoService {
         throw new RuntimeException("Articulo no encontrado: " + id);
     }
 
-    public List<Pedido> getPedidosByDateRange(LocalDate fechaInicio, LocalDate fechaFin) {
-        return pedidoRepository.findByFechaPedidoBetween(fechaInicio, fechaFin);
-    }
-
     public List<Pedido> getAllPedidos() {
         return pedidoRepository.findAll();
     }
@@ -202,7 +202,7 @@ public class PedidoService {
                 Factura factura = existingPedido.getFactura();
                 if (factura != null) {
                     factura.setPagado(true); // Actualiza el campo pagado a true
-                    factura.setMpPaymentId(UUID.randomUUID().toString());//numero aleatorio y unico
+                    factura.setMpPaymentId(UUID.randomUUID().toString()); // numero aleatorio y unico
                     existingPedido.setFactura(factura);
                 }
             }
@@ -233,11 +233,6 @@ public class PedidoService {
 
         return dto;
     }
-
-
-
-
-
 
     public void generarYEnviarPDF(Long pedidoId, String email) throws IOException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(pedidoId);
@@ -395,4 +390,195 @@ public class PedidoService {
             e.printStackTrace();
         }
     }
+
+    // Métodos para generar los datos del Excel de charts
+    public SXSSFWorkbook generarExcelCompleto() {
+        LocalDate fechaInicio = LocalDate.of(2022, 1, 1); // Ejemplo de fecha de inicio
+        LocalDate fechaFin = LocalDate.now(); // Fecha actual como fin
+
+        SXSSFWorkbook workbook = new SXSSFWorkbook();
+
+        // Datos de Pedidos
+        Sheet sheetPedidos = workbook.createSheet("Pedidos");
+        List<Pedido> pedidos = getPedidosByDateRange(fechaInicio, fechaFin);
+        crearHojaPedidos(sheetPedidos, pedidos);
+
+        // Comidas Más Pedidas
+        Sheet sheetComidas = workbook.createSheet("Comidas Más Pedidas");
+        List<Map<String, Object>> comidasMasPedidas = getTop3ComidasMasPedidas(fechaInicio, fechaFin);
+        crearHojaComidasMasPedidas(sheetComidas, comidasMasPedidas);
+
+        // Recaudaciones por Periodo
+        Sheet sheetRecaudaciones = workbook.createSheet("Recaudaciones por Periodo");
+        List<Map<String, Object>> recaudacionesPorPeriodo = getRecaudacionesPorPeriodo(fechaInicio, fechaFin);
+        crearHojaRecaudacionesPorPeriodo(sheetRecaudaciones, recaudacionesPorPeriodo);
+
+        // Pedidos por Cliente
+        Sheet sheetPedidosCliente = workbook.createSheet("Pedidos por Cliente");
+        List<Map<String, Object>> pedidosPorCliente = getCantidadPedidosPorCliente(fechaInicio, fechaFin);
+        crearHojaPedidosPorCliente(sheetPedidosCliente, pedidosPorCliente);
+
+
+        return workbook;
+    }
+
+    private List<Map<String, Object>> getTop3ComidasMasPedidas(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Map<String, Object>> comidasMasPedidas = getComidasMasPedidas(fechaInicio, fechaFin);
+        return comidasMasPedidas.stream()
+                .sorted((map1, map2) -> Integer.compare((Integer) map2.get("cantidad"), (Integer) map1.get("cantidad")))
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    private void crearHojaPedidos(Sheet sheet, List<Pedido> pedidos) {
+        // Crear el encabezado
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("ID Pedido");
+        header.createCell(1).setCellValue("Fecha Pedido");
+        header.createCell(2).setCellValue("Total Pedido");
+        header.createCell(3).setCellValue("Denominación Artículo");
+        header.createCell(4).setCellValue("Cantidad");
+        header.createCell(5).setCellValue("SubTotal");
+        header.createCell(6).setCellValue("Nombre Cliente");
+        header.createCell(7).setCellValue("Email Cliente");
+        header.createCell(8).setCellValue("ID Factura");
+
+        // Llenar los datos
+        int rowNum = 1;
+        for (Pedido pedido : pedidos) {
+            boolean isFirstDetail = true;
+            for (DetallePedido detalle : pedido.getDetallePedidos()) {
+                Row row = sheet.createRow(rowNum++);
+                if (isFirstDetail) {
+                    row.createCell(0).setCellValue(pedido.getId());
+                    row.createCell(1).setCellValue(pedido.getFechaPedido().toString());
+                    row.createCell(2).setCellValue(pedido.getTotal());
+                    row.createCell(6).setCellValue(pedido.getUser().getNombre());
+                    row.createCell(7).setCellValue(pedido.getUser().getGmail());
+                    row.createCell(8).setCellValue(pedido.getFactura() != null ? String.valueOf(pedido.getFactura().getId()) : "");
+                    isFirstDetail = false;
+                } else {
+                    row.createCell(0).setCellValue("");
+                    row.createCell(1).setCellValue("");
+                    row.createCell(2).setCellValue("");
+                    row.createCell(6).setCellValue("");
+                    row.createCell(7).setCellValue("");
+                    row.createCell(8).setCellValue("");
+                }
+                row.createCell(3).setCellValue(detalle.getArticulo().getDenominacion());
+                row.createCell(4).setCellValue(detalle.getCantidad());
+                row.createCell(5).setCellValue(detalle.getSubTotal());
+            }
+        }
+    }
+
+    private void crearHojaComidasMasPedidas(Sheet sheet, List<Map<String, Object>> comidasMasPedidas) {
+        // Crear el encabezado
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("Artículo");
+        header.createCell(1).setCellValue("Cantidad");
+
+        // Llenar los datos
+        int rowNum = 1;
+        for (Map<String, Object> comida : comidasMasPedidas) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue((String) comida.get("articulo"));
+            row.createCell(1).setCellValue((Integer) comida.get("cantidad"));
+        }
+    }
+
+    private void crearHojaRecaudacionesPorPeriodo(Sheet sheet, List<Map<String, Object>> recaudacionesPorPeriodo) {
+        int rowNum = 0;
+        for (Map<String, Object> recaudaciones : recaudacionesPorPeriodo) {
+            String tipo = (String) recaudaciones.get("tipo");
+            Map<String, Double> data = (Map<String, Double>) recaudaciones.get("recaudaciones");
+
+            // Crear el encabezado
+            Row header = sheet.createRow(rowNum++);
+            header.createCell(0).setCellValue("Periodo (" + tipo + ")");
+            header.createCell(1).setCellValue("Recaudación");
+
+            // Llenar los datos
+            for (Map.Entry<String, Double> entry : data.entrySet()) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(entry.getKey());
+                row.createCell(1).setCellValue(entry.getValue());
+            }
+            rowNum++;
+        }
+    }
+
+    private void crearHojaPedidosPorCliente(Sheet sheet, List<Map<String, Object>> pedidosPorCliente) {
+        // Crear el encabezado
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("Cliente");
+        header.createCell(1).setCellValue("Cantidad de Pedidos");
+
+        // Llenar los datos
+        int rowNum = 1;
+        for (Map<String, Object> pedido : pedidosPorCliente) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue((String) pedido.get("cliente"));
+            row.createCell(1).setCellValue((Long) pedido.get("cantidad"));
+        }
+    }
+
+    public List<Pedido> getPedidosByDateRange(LocalDate fechaInicio, LocalDate fechaFin) {
+        return pedidoRepository.findByFechaPedidoBetween(fechaInicio, fechaFin);
+    }
+
+    public List<Map<String, Object>> getComidasMasPedidas(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Pedido> pedidos = getPedidosByDateRange(fechaInicio, fechaFin);
+        Map<String, Integer> conteoComidas = new HashMap<>();
+        pedidos.forEach(pedido -> {
+            pedido.getDetallePedidos().forEach(detalle -> {
+                String articulo = detalle.getArticulo().getDenominacion();
+                conteoComidas.put(articulo, conteoComidas.getOrDefault(articulo, 0) + detalle.getCantidad());
+            });
+        });
+        return conteoComidas.entrySet()
+                .stream()
+                .map(entry -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("articulo", entry.getKey());
+                    map.put("cantidad", entry.getValue());
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, Object>> getRecaudacionesPorPeriodo(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Pedido> pedidos = getPedidosByDateRange(fechaInicio, fechaFin);
+        Map<String, Double> recaudacionesDiarias = new HashMap<>();
+        Map<String, Double> recaudacionesMensuales = new HashMap<>();
+
+        pedidos.forEach(pedido -> {
+            String dia = pedido.getFechaPedido().toString();
+            String mes = pedido.getFechaPedido().getYear() + "-" + pedido.getFechaPedido().getMonthValue();
+            recaudacionesDiarias.put(dia, recaudacionesDiarias.getOrDefault(dia, 0.0) + pedido.getTotal());
+            recaudacionesMensuales.put(mes, recaudacionesMensuales.getOrDefault(mes, 0.0) + pedido.getTotal());
+        });
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        result.add(Map.of("tipo", "Diario", "recaudaciones", recaudacionesDiarias));
+        result.add(Map.of("tipo", "Mensual", "recaudaciones", recaudacionesMensuales));
+        return result;
+    }
+
+    public List<Map<String, Object>> getCantidadPedidosPorCliente(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Pedido> pedidos = getPedidosByDateRange(fechaInicio, fechaFin);
+        Map<String, Long> pedidosPorCliente = pedidos.stream()
+                .collect(Collectors.groupingBy(p -> p.getUser().getNombre(), Collectors.counting()));
+
+        return pedidosPorCliente.entrySet()
+                .stream()
+                .map(entry -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("cliente", entry.getKey());
+                    map.put("cantidad", entry.getValue());
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
 }
+

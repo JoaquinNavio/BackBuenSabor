@@ -38,6 +38,9 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
     @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @Override
     public ResponseEntity<ArticuloInsumoDto> edit(@RequestBody ArticuloInsumoCreateDto entity, @PathVariable Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("The given id must not be null");
+        }
         return ResponseEntity.ok(facade.update(entity, id));
     }
 
