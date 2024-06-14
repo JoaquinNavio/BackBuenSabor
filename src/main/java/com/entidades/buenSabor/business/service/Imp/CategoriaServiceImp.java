@@ -7,9 +7,13 @@ import com.entidades.buenSabor.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> implements CategoriaService {
+    @Autowired
+    private CategoriaRepository categoriaRepository;
     @Override
     public Categoria update(Categoria request, Long id) {
         var optionalEntity = baseRepository.findById(id);
@@ -21,5 +25,9 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
         existingEntity.setEsInsumo(request.isEsInsumo());
         existingEntity.setCategoriaPadre(request.getCategoriaPadre()); // Asegúrate de actualizar la categoría padre
         return baseRepository.save(existingEntity);
+    }
+    @Override
+    public List<Categoria> getAllNoElaborar(){
+        return categoriaRepository.getAllNoElaborar();
     }
 }

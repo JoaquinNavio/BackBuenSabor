@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Getter
 @ToString
 @SuperBuilder
+@Audited
 public class Pedido extends Base {
 
     private LocalTime horaEstimadaFinalizacion;

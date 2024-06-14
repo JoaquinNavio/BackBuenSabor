@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import java.util.Set;
         @JsonSubTypes.Type(value = ArticuloInsumo.class, name = "articuloInsumo")
 })
 @JsonIgnoreProperties({"imagenes", "unidadMedida", "categoria"}) // Ignorar relaciones recursivas
+@Audited
 public abstract class Articulo extends Base {
 
     protected String denominacion;

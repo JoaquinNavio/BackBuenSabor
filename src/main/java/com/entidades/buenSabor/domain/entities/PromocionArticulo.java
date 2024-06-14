@@ -3,6 +3,7 @@ package com.entidades.buenSabor.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
 @Entity
 @NoArgsConstructor
@@ -11,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @SuperBuilder
+@Audited
 public class PromocionArticulo {
 
     @EmbeddedId
