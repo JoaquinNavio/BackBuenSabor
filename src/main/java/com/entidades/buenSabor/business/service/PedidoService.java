@@ -144,10 +144,12 @@ public class PedidoService {
 
     private void validarYActualizarStock(Pedido pedido) {
         Map<Long, Integer> stockRequerido = new HashMap<>();
+
         for (DetallePedido detalle : pedido.getDetallePedidos()) {
             Long articuloId = detalle.getArticulo().getId();
             int cantidad = detalle.getCantidad();
             Articulo articulo = findArticuloById(articuloId);
+
             if (articulo instanceof ArticuloInsumo) {
                 stockRequerido.merge(articuloId, cantidad, Integer::sum);
             } else if (articulo instanceof ArticuloManufacturado) {
@@ -204,19 +206,48 @@ public class PedidoService {
         Pedido existingPedido = getPedidoById(id);
         if (existingPedido != null) {
             Estado nuevoEstado = Estado.valueOf(estado);
-            if (nuevoEstado == Estado.ENTREGADO && existingPedido.getEstado() == Estado.PENDIENTE_ENTREGA_PAGO_EFECTIVO) {
+
+            if (nuevoEstado == Estado.ENTREGADO) {
                 Factura factura = existingPedido.getFactura();
-                if (factura != null) {
+                if (!factura.getPagado()) {
                     factura.setPagado(true); // Actualiza el campo pagado a true
-                    factura.setMpPaymentId(UUID.randomUUID().toString()); // numero aleatorio y unico
+                    factura.setMpPaymentId(UUID.randomUUID().toString()); // Numero aleatorio y unico
                     existingPedido.setFactura(factura);
                 }
+            }
+
+            // Lógica para devolver el stock si el estado es diferente de PREPARADO y se actualiza a CANCELADO
+            if (!existingPedido.getEstado().equals(Estado.PREPARADO) && nuevoEstado == Estado.CANCELADO) {
+                devolverStock(existingPedido);
             }
 
             existingPedido.setEstado(nuevoEstado);
             return pedidoRepository.save(existingPedido);
         }
         return null;
+    }
+
+    private void devolverStock(Pedido pedido) {
+        for (DetallePedido detalle : pedido.getDetallePedidos()) {
+            Long articuloId = detalle.getArticulo().getId();
+            int cantidad = detalle.getCantidad();
+            Articulo articulo = findArticuloById(articuloId);
+            if (articulo instanceof ArticuloInsumo) {
+                ArticuloInsumo insumo = (ArticuloInsumo) articulo;
+                insumo.setStockActual(insumo.getStockActual() + cantidad);
+                articuloInsumoRepository.save(insumo);
+            } else if (articulo instanceof ArticuloManufacturado) {
+                ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
+                for (ArticuloManufacturadoDetalle amd : manufacturado.getDetalles()) {
+                    Long insumoId = amd.getArticuloInsumo().getId();
+                    int cantidadRequerida = amd.getCantidad() * cantidad;
+                    ArticuloInsumo insumo = articuloInsumoRepository.findById(insumoId)
+                            .orElseThrow(() -> new RuntimeException("ArticuloInsumo no encontrado: " + insumoId));
+                    insumo.setStockActual(insumo.getStockActual() + cantidadRequerida);
+                    articuloInsumoRepository.save(insumo);
+                }
+            }
+        }
     }
 
     private PedidoDTO convertToDTO(Pedido pedido) {
