@@ -59,6 +59,12 @@ public class PedidoService {
     @Autowired
     private EmailService emailService;
 
+
+    public PedidoDTO getUltimoPedido() {
+        Pedido ultimoPedido = pedidoRepository.findTopByOrderByIdDesc();
+        return convertToDTO(ultimoPedido);
+    }
+
     // Charts
     public List<Map<String, Object>> getPedidosPorFormaPago() {
         List<Pedido> pedidos = getAllPedidos();
@@ -219,6 +225,7 @@ public class PedidoService {
         dto.setEstado(pedido.getEstado());
         dto.setClienteId(pedido.getUser().getId());
         dto.setClienteNombre(pedido.getUser().getNombre());
+        dto.setHoraEstimadaFinalizacion(pedido.getHoraEstimadaFinalizacion());  // Nueva propiedad
 
         // Convertir detallePedidos a DetallePedidoDTO
         List<DetallePedidoDTO> detallesDTO = pedido.getDetallePedidos().stream()
