@@ -17,6 +17,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(exclude = "articulo") // Excluir la relación recursiva
 @SuperBuilder
 @JsonIgnoreProperties({"articulo"}) // Ignorar relaciones recursivas
+//No se audita
 public class ImagenArticulo extends Base {
 
     @Column(name = "name_image")

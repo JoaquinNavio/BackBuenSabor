@@ -26,6 +26,13 @@ public class CategoriaController extends BaseControllerImp<Categoria, CategoriaD
         return ResponseEntity.ok(facade.getById(id));
     }
 
+    /*Enpoint para retornar las categorias que no son insumo*/
+    @GetMapping("/NoInsumo")
+    public ResponseEntity<List<CategoriaDto>> getNoInsumo() {
+        return ResponseEntity.ok(facade.getAllNoElaborar());
+    }
+
+
     @GetMapping
     @Override
     public ResponseEntity<List<CategoriaDto>> getAll() {

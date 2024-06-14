@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import lombok.*;
+import org.hibernate.envers.Audited;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @AllArgsConstructor
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(origins = "*")
 @Getter
 @Setter
+@Audited
 public class User extends Base {
     @Column(unique = true)
     private String gmail;

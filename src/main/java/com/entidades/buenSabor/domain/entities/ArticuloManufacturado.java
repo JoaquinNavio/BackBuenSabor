@@ -3,6 +3,7 @@ package com.entidades.buenSabor.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @Setter
 @Getter
 @SuperBuilder
-//@Audited
+@Audited
 public class ArticuloManufacturado extends Articulo {
 
     /*descripcion, tiempoEstimadoMinutos, preparacion: Atributos específicos de un artículo manufacturado*/

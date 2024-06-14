@@ -13,7 +13,7 @@ import org.hibernate.envers.Audited;
 @Setter
 @Entity
 @SuperBuilder
-//@Audited
+@Audited
 public class ArticuloManufacturadoDetalle extends Base {
     /*Atributo de la clase*/
     private Integer cantidad;

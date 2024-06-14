@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @Getter
 @SuperBuilder
-//@Audited
+@Audited
 public class ArticuloInsumo extends Articulo{
 
     private Double precioCompra;

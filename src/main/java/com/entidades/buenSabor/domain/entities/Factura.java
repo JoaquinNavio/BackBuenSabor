@@ -3,6 +3,7 @@ package com.entidades.buenSabor.domain.entities;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @ToString
 @SuperBuilder
+@Audited
 public class Factura extends Base {
     private LocalDate fechaFcturacion;
     private String mpPaymentId;
