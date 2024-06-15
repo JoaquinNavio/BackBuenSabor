@@ -7,6 +7,7 @@ import com.entidades.buenSabor.domain.dto.PedidoDTO;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.entities.PedidoPrintManager;
 import com.entidades.buenSabor.domain.entities.PreferenceMP;
+import com.entidades.buenSabor.repositories.PedidoRepository;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import org.apache.commons.mail.EmailException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -34,21 +35,24 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
     @GetMapping("/por-forma-pago")
     public ResponseEntity<List<Map<String, Object>>> getPedidosPorFormaPago() {
-        List<Map<String, Object>> data = pedidoService.getPedidosPorFormaPago();
+        List<Map<String, Object>> data = pedidoRepository.findPedidosPorFormaPago();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @GetMapping("/por-mes")
     public ResponseEntity<List<Map<String, Object>>> getPedidosPorMes() {
-        List<Map<String, Object>> data = pedidoService.getPedidosPorMes();
+        List<Map<String, Object>> data = pedidoRepository.findPedidosPorMes();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @GetMapping("/por-articulo")
     public ResponseEntity<List<Map<String, Object>>> getPedidosPorArticulo() {
-        List<Map<String, Object>> data = pedidoService.getPedidosPorArticulo();
+        List<Map<String, Object>> data = pedidoRepository.findPedidosPorArticulo();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -110,7 +114,6 @@ public class PedidoController {
         return preference;
     }
 
-
     @GetMapping("/generatePDF/{pedidoId}")
     public ResponseEntity<byte[]> generatePDF(@PathVariable("pedidoId") Long pedidoId) {
         try {
@@ -160,9 +163,6 @@ public class PedidoController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 
     @GetMapping("/ultimo")
     public ResponseEntity<PedidoDTO> obtenerUltimoPedido() {

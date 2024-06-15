@@ -65,56 +65,6 @@ public class PedidoService {
         return convertToDTO(ultimoPedido);
     }
 
-    // Charts
-    public List<Map<String, Object>> getPedidosPorFormaPago() {
-        List<Pedido> pedidos = getAllPedidos();
-        return pedidos.stream()
-                .collect(Collectors.groupingBy(Pedido::getFormaPago, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .map(entry -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("formaPago", entry.getKey().toString());
-                    map.put("cantidad", entry.getValue());
-                    return map;
-                })
-                .collect(Collectors.toList());
-    }
-
-    public List<Map<String, Object>> getPedidosPorMes() {
-        List<Pedido> pedidos = getAllPedidos();
-        return pedidos.stream()
-                .collect(Collectors.groupingBy(p -> p.getFechaPedido().getMonth(), Collectors.counting()))
-                .entrySet()
-                .stream()
-                .map(entry -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("mes", entry.getKey().toString());
-                    map.put("cantidad", entry.getValue());
-                    return map;
-                })
-                .collect(Collectors.toList());
-    }
-
-    public List<Map<String, Object>> getPedidosPorArticulo() {
-        List<Pedido> pedidos = getAllPedidos();
-        Map<String, Integer> conteoArticulos = new HashMap<>();
-        pedidos.forEach(pedido -> {
-            pedido.getDetallePedidos().forEach(detalle -> {
-                String articulo = detalle.getArticulo().getDenominacion();
-                conteoArticulos.put(articulo, conteoArticulos.getOrDefault(articulo, 0) + detalle.getCantidad());
-            });
-        });
-        return conteoArticulos.entrySet()
-                .stream()
-                .map(entry -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("articulo", entry.getKey());
-                    map.put("cantidad", entry.getValue());
-                    return map;
-                })
-                .collect(Collectors.toList());
-    }
 
     @Transactional
     public Pedido savePedidoWithDetails(Pedido pedido) {
