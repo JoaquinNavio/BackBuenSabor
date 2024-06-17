@@ -27,9 +27,6 @@ public abstract class Persona extends Base {
     protected String email;
 
     @OneToOne
-    protected Usuario usuario;
-
-    @OneToOne
     @NotAudited
     protected ImagenPersona imagenPersona;
 

@@ -20,13 +20,9 @@ public class Empleado extends Persona{
 
     private Rol tipoEmpleado;
 
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
-    @ToString.Exclude
-    @Builder.Default
-    private Set<Pedido> pedidos= new HashSet<>();
-
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "sucursal_id")
     private Sucursal sucursal;
+
 }
