@@ -26,5 +26,10 @@ public class Domicilio extends Base{
     @NotAudited
     private Localidad localidad;
 
+    @ManyToOne
+    @JoinColumn(name = "empleado_id")
+    @Audited
+    private Empleado empleado;
+
 
 }
