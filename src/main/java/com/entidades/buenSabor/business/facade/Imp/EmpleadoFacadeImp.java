@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto,Long> implements EmpleadoFacade {
@@ -64,5 +65,12 @@ public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, Empl
 
         Empleado savedEmpleado = empleadoServiceImp.create(empleado, imagenFile);
         return empleadoMapper.toDTO(savedEmpleado);
+    }
+
+
+
+    public Optional<EmpleadoDto> getByEmail(String email) {
+        Optional<Empleado> empleado = empleadoServiceImp.getByEmail(email);
+        return empleado.map(empleadoMapper::toDTO);
     }
 }

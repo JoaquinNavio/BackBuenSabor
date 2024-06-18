@@ -35,7 +35,9 @@ public class EmpleadoServiceImp extends BaseServiceImp<Empleado,Long> implements
     public List<Empleado> getEmpleadoBySucursal(Long idSucursal){
         return empleadoRepository.findBySucursalId(idSucursal);
     }
-
+    public Optional<Empleado> getByEmail(String email) {
+        return empleadoRepository.findByEmail(email);
+    }
     @Override
     public Optional<Empleado> findById(Long id) {
         return empleadoRepository.findById(id);
