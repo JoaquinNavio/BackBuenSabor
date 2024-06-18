@@ -23,6 +23,7 @@ public class Empresa extends Base{
     private String nombre;
     private String razonSocial;
     private Long cuil;
+    private String url_imagen;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empresa")

@@ -24,4 +24,5 @@ public class ShortSucursal extends BaseDto {
     private LocalTime horarioCierre;
     private Boolean esCasaMatriz;
     private DomicilioDto domicilio;
+    private String url_imagen;
 }

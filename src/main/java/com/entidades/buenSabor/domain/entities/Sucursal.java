@@ -26,6 +26,7 @@ import java.util.Set;
 public class Sucursal extends  Base{
 
     private String nombre;
+    private String url_imagen;
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
     private LocalTime horarioApertura;
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
