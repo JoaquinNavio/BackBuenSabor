@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/empleado")
@@ -51,4 +52,10 @@ public class EmpleadoController extends BaseControllerImp<Empleado, EmpleadoDto,
         return ResponseEntity.ok(facade.create(empleadoDto));
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<EmpleadoDto> getByEmail(@PathVariable String email) {
+        Optional<EmpleadoDto> empleadoOptional = facade.getByEmail(email);
+        return empleadoOptional.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
