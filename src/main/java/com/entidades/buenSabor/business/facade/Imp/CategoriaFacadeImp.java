@@ -9,6 +9,8 @@ import com.entidades.buenSabor.business.service.CategoriaService;
 import com.entidades.buenSabor.domain.dto.Categoria.CategoriaCreateDto;
 import com.entidades.buenSabor.domain.dto.Categoria.CategoriaDto;
 import com.entidades.buenSabor.domain.entities.Categoria;
+import com.entidades.buenSabor.domain.entities.Sucursal;
+import com.entidades.buenSabor.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ public class CategoriaFacadeImp extends BaseFacadeImp<Categoria, CategoriaDto, C
     @Autowired
     private CategoriaService categoriaService;
 
+    @Autowired
+    private SucursalRepository sucursalRepository;
+
     @Override
     public CategoriaDto createNew(CategoriaCreateDto request) {
         var entityToCreate = baseMapper.toEntityCreate(request);
@@ -30,6 +35,13 @@ public class CategoriaFacadeImp extends BaseFacadeImp<Categoria, CategoriaDto, C
             Categoria categoriaPadre = baseService.getById(request.getCategoriaPadreId());
             entityToCreate.setCategoriaPadre(categoriaPadre);
         }
+
+        if (request.getSucursal_id() != null) {
+            Sucursal sucursal = sucursalRepository.findById(request.getSucursal_id())
+                    .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"));
+            entityToCreate.setSucursal(sucursal);
+        }
+
         var entityCreated = baseService.create(entityToCreate);
         return baseMapper.toDTO(entityCreated);
     }

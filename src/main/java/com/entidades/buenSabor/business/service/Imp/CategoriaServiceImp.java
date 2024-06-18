@@ -30,4 +30,9 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
     public List<Categoria> getAllNoElaborar(){
         return categoriaRepository.getAllNoElaborar();
     }
+
+    @Override
+    public List<Categoria> findBySucursalId(Long sucursalId) {
+        return categoriaRepository.findBySucursalId(sucursalId);
+    }
 }

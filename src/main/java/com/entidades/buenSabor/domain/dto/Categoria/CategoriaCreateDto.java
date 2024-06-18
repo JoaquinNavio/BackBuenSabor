@@ -13,4 +13,5 @@ public class CategoriaCreateDto {
     private String denominacion;
     private boolean esInsumo;
     private Long categoriaPadreId;
+    private Long sucursal_id;
 }

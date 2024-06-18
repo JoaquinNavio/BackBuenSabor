@@ -20,9 +20,9 @@ public class Categoria extends Base{
     private String denominacion;
     private boolean esInsumo;
 
-    @ManyToMany(mappedBy = "categorias")
+    /*@ManyToMany(mappedBy = "categorias")
     @Builder.Default
-    private Set<Sucursal> sucursales = new HashSet<>();
+    private Set<Sucursal> sucursales = new HashSet<>();*/
 
     @OneToMany
     //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
@@ -35,4 +35,9 @@ public class Categoria extends Base{
     @ManyToOne
     @JoinColumn(name = "categoria_padre_id")
     private Categoria categoriaPadre;
+
+    @ManyToOne
+    @ToString.Exclude
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
 }

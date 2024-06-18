@@ -15,4 +15,5 @@ public class CategoriaDto extends BaseDto {
     private String denominacion;
     private boolean esInsumo;
     private CategoriaDto categoriaPadre;
+    private Long sucursal_id;
 }
