@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UnidadMedidaCreateDto {
     private String denominacion;
+    private Long sucursal_id;
 }

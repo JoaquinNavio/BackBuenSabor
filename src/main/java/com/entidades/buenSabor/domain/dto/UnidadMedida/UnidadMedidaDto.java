@@ -12,4 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UnidadMedidaDto extends BaseDto {
     private String denominacion;
+
 }
