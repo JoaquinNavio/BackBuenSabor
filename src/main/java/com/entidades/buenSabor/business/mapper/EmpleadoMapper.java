@@ -1,7 +1,10 @@
 package com.entidades.buenSabor.business.mapper;
 
+import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioCreateDto;
+import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;
 import com.entidades.buenSabor.domain.dto.Empleado.EmpleadoCreateDto;
 import com.entidades.buenSabor.domain.dto.Empleado.EmpleadoDto;
+import com.entidades.buenSabor.domain.entities.Domicilio;
 import com.entidades.buenSabor.domain.entities.Empleado;
 import com.entidades.buenSabor.domain.entities.ImagenPersona;
 import com.entidades.buenSabor.domain.entities.Sucursal;
@@ -17,9 +20,11 @@ import java.util.List;
 public interface EmpleadoMapper extends BaseMapper<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto> {
 
     @Mapping(target = "sucursal.id", source = "sucursal_id")
+    @Mapping(target = "domicilios", source = "domicilios")
     Empleado toEntityCreate(EmpleadoCreateDto source);
 
-    @Override
+    @Mapping(target = "sucursal_id", source = "sucursal.id")
+    @Mapping(target = "domicilios", source = "domicilios")
     EmpleadoDto toDTO(Empleado entity);
 
     @Override
@@ -27,4 +32,10 @@ public interface EmpleadoMapper extends BaseMapper<Empleado, EmpleadoDto, Emplea
 
     @Override
     List<EmpleadoDto> toDTOsList(List<Empleado> entities);
+
+    @Mapping(target = "localidad.id", source = "idLocalidad") // Agregar esta línea
+    Domicilio toDomicilio(DomicilioCreateDto domicilioCreateDto);
+
+    List<Domicilio> toDomicilios(List<DomicilioCreateDto> domicilioCreateDtos);
+    List<DomicilioDto> toDomicilioDtos(List<Domicilio> domicilios);
 }

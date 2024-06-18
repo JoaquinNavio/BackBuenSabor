@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.dto.Empleado;
 
 import com.entidades.buenSabor.domain.dto.BaseDto;
+import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;
 import com.entidades.buenSabor.domain.entities.ImagenPersona;
 import com.entidades.buenSabor.domain.enums.Rol;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,5 @@ public class EmpleadoDto extends BaseDto {
     private Rol tipoEmpleado;
     private Long sucursal_id;
     private ImagenPersona imagen;
+    private List<DomicilioDto> domicilios;
 }

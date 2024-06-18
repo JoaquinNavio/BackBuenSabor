@@ -8,11 +8,14 @@ import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.business.service.Imp.EmpleadoServiceImp;
 import com.entidades.buenSabor.domain.dto.Empleado.EmpleadoCreateDto;
 import com.entidades.buenSabor.domain.dto.Empleado.EmpleadoDto;
+import com.entidades.buenSabor.domain.entities.Domicilio;
 import com.entidades.buenSabor.domain.entities.Empleado;
+import com.entidades.buenSabor.repositories.LocalidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -20,6 +23,9 @@ public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, Empl
 
     private final EmpleadoServiceImp empleadoServiceImp;
     private final EmpleadoMapper empleadoMapper;
+
+    @Autowired
+    LocalidadRepository localidadRepository;
 
     @Autowired
     public EmpleadoFacadeImp(BaseService<Empleado, Long> baseService, BaseMapper<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto> baseMapper,
@@ -45,6 +51,17 @@ public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, Empl
     public EmpleadoDto create(EmpleadoCreateDto empleadoCreateDto) {
         Empleado empleado = empleadoMapper.toEntityCreate(empleadoCreateDto);
         MultipartFile imagenFile = empleadoCreateDto.getImagen();
+
+        if (empleadoCreateDto.getDomicilios() != null) {
+            List<Domicilio> domicilios = empleadoMapper.toDomicilios(empleadoCreateDto.getDomicilios());
+            for (Domicilio domicilio : domicilios) {
+                domicilio.setEmpleado(empleado);
+                domicilio.setLocalidad(localidadRepository.findById(domicilio.getLocalidad().getId())
+                        .orElseThrow(() -> new RuntimeException("Localidad no encontrada"))); // Agregar esta línea para asegurar la asignación de Localidad
+            }
+            empleado.setDomicilios(new HashSet<>(domicilios));
+        }
+
         Empleado savedEmpleado = empleadoServiceImp.create(empleado, imagenFile);
         return empleadoMapper.toDTO(savedEmpleado);
     }

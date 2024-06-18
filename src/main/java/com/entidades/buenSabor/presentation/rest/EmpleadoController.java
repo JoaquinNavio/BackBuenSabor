@@ -40,8 +40,10 @@ public class EmpleadoController extends BaseControllerImp<Empleado, EmpleadoDto,
     }
 
     @GetMapping("/sucursal/{id}")
-    public ResponseEntity<List<Empleado>> getEmpleadosBySucursal(@PathVariable Long id) {
-        return ResponseEntity.ok(facade.getEmpleadosBySucursal(id));
+    public ResponseEntity<List<EmpleadoDto>> getEmpleadosBySucursal(@PathVariable Long id) {
+        List<Empleado> empleados = facade.getEmpleadosBySucursal(id);
+        List<EmpleadoDto> empleadoDtos = empleadoMapper.toDTOsList(empleados);
+        return ResponseEntity.ok(empleadoDtos);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
