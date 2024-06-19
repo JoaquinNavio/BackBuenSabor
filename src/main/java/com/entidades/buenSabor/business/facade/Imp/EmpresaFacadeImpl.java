@@ -5,6 +5,7 @@ import com.entidades.buenSabor.business.facade.EmpresaFacade;
 import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.mapper.EmpresaMapper;
 import com.entidades.buenSabor.business.service.Base.BaseService;
+import com.entidades.buenSabor.business.service.CloudinaryService;
 import com.entidades.buenSabor.business.service.EmpresaService;
 import com.entidades.buenSabor.domain.dto.Empresa.EmpresaCreateDto;
 import com.entidades.buenSabor.domain.dto.Empresa.EmpresaDto;
@@ -26,8 +27,19 @@ public class EmpresaFacadeImpl extends BaseFacadeImp<Empresa, EmpresaDto, Empres
     @Autowired
     EmpresaService empresaService;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
     @Override
     public EmpresaLargeDto getEmpresaSucursales(Long idEmpresa) {
         return empresaMapper.toLargeDto(empresaService.getEmpresaSucursales(idEmpresa));
+    }
+
+    @Override
+    public EmpresaDto createNew(EmpresaCreateDto dto) {
+        Empresa empresa = baseMapper.toEntityCreate(dto);
+        empresa.setUrl_imagen(cloudinaryService.uploadFile(dto.getImagen()));
+        Empresa empresaCreada = baseService.create(empresa);
+        return baseMapper.toDTO(empresaCreada);
     }
 }

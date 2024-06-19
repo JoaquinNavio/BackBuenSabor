@@ -14,5 +14,5 @@ public class EmpresaCreateDto {
     private String nombre;
     private String razonSocial;
     private Long cuil;
-    //private MultipartFile imagen;
+    private MultipartFile imagen;
 }

@@ -25,5 +25,5 @@ public class SucursalCreateDto {
     private Boolean esCasaMatriz;
     private DomicilioCreateDto domicilio;
     private Long idEmpresa;
-    //private MultipartFile imagen;
+    private MultipartFile imagen;
 }
