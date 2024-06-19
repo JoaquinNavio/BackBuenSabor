@@ -19,46 +19,24 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {CategoriaService.class, UnidadMedidaService.class})
 public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoCreateDto> {
-    @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
-    @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
-    //@Mapping(target = "imagenes", source = "files", qualifiedByName = "mapImages")
+
+    @Mapping(source = "idUnidadMedida", target = "unidadMedida", qualifiedByName = "getById")
+    @Mapping(source = "idCategoria", target = "categoria", qualifiedByName = "getById")
+    @Mapping(source = "sucursal_id", target = "sucursal.id")
     ArticuloInsumo toEntityCreate(ArticuloInsumoCreateDto source);
 
     @Override
-    @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
-    @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
+    @Mapping(source = "idUnidadMedida", target = "unidadMedida", qualifiedByName = "getById")
+    @Mapping(source = "idCategoria", target = "categoria", qualifiedByName = "getById")
+    @Mapping(source = "sucursal_id", target = "sucursal.id")
     ArticuloInsumo toUpdate(@MappingTarget ArticuloInsumo entity, ArticuloInsumoCreateDto source);
 
-
-    /*
-    @Named("mapImages")
-    default Set<ImagenArticulo> mapImages(Set<ImagenArticuloCreateDto> imageDtos) {
-        if (imageDtos == null) {
-            return null;
-        }
-        return imageDtos.stream()
-                .map(this::mapImage)
-                .collect(Collectors.toSet());
-    }
-
-    default ImagenArticulo mapImage(ImagenArticuloCreateDto imageDto) {
-        if (imageDto == null) {
-            return null;
-        }
-        ImagenArticulo image = new ImagenArticulo();
-        image.setUrl(imageDto.getUrl());
-        image.setArticulo(new ArticuloInsumo());
-        return image;
-    }
-
-     */
-
     @Override
-    @Mapping(target = "unidadMedida", source = "unidadMedida")
-    @Mapping(target = "categoria", source = "categoria")
-    @Mapping(target = "imagenes", source = "imagenes", qualifiedByName = "mapImagesToDto")
+    @Mapping(source = "unidadMedida", target = "unidadMedida")
+    @Mapping(source = "categoria", target = "categoria")
+    @Mapping(source = "imagenes", target = "imagenes", qualifiedByName = "mapImagesToDto")
+    @Mapping(source = "sucursal.id", target = "sucursal_id")
     ArticuloInsumoDto toDTO(ArticuloInsumo entity);
-
 
     @Named("mapImagesToDto")
     default Set<ImagenArticuloDto> mapImagesToDto(Set<ImagenArticulo> images) {
@@ -81,4 +59,3 @@ public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, Articul
         return imageDto;
     }
 }
-

@@ -8,7 +8,9 @@ import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.Insumo.ArticuloInsumoCreateDto;
 import com.entidades.buenSabor.domain.dto.Insumo.ArticuloInsumoDto;
 import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
+import com.entidades.buenSabor.domain.entities.Sucursal;
 import com.entidades.buenSabor.repositories.ArticuloInsumoRepository;
+import com.entidades.buenSabor.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,13 +30,31 @@ public class ArticuloInsumoFacadeImp extends BaseFacadeImp<ArticuloInsumo, Artic
     @Autowired
     private ArticuloInsumoRepository articuloInsumoRepository;
 
-    public ResponseEntity<ArticuloInsumoDto> createCompleto(ArticuloInsumoCreateDto insumoCreateDto){
-        ArticuloInsumoDto insumodto = articuloInsumoService.createCompleto(insumoCreateDto);
-        return ResponseEntity.ok(insumodto);
+    @Autowired
+    private SucursalRepository sucursalRepository;
+
+    public ResponseEntity<ArticuloInsumoDto> createCompleto(ArticuloInsumoCreateDto insumoCreateDto) {
+        ArticuloInsumo articuloInsumo = baseMapper.toEntityCreate(insumoCreateDto);
+
+        if (insumoCreateDto.getSucursal_id() != null) {
+            Sucursal sucursal = sucursalRepository.findById(insumoCreateDto.getSucursal_id())
+                    .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"));
+            articuloInsumo.setSucursal(sucursal);
+        }
+
+        ArticuloInsumo savedArticuloInsumo = baseService.create(articuloInsumo);
+        ArticuloInsumoDto articuloInsumoDto = baseMapper.toDTO(savedArticuloInsumo);
+        return ResponseEntity.ok(articuloInsumoDto);
     }
 
     public List<ArticuloInsumoDto> getArticulosNoParaElaborar() {
         List<ArticuloInsumo> articulos = articuloInsumoRepository.findByEsParaElaborarFalse();
         return baseMapper.toDTOsList(articulos);
     }
+
+    public List<ArticuloInsumo> getBySucursalId(Long sucursalId) {
+        return articuloInsumoService.findBySucursalId(sucursalId);
+    }
+
+
 }

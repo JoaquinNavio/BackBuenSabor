@@ -47,6 +47,11 @@ public abstract class Articulo extends Base {
     //@JsonIgnore
     protected Categoria categoria;
 
+    @ManyToOne
+    @ToString.Exclude
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
+
     @Override
     public String toString() {
         return "Articulo{" +

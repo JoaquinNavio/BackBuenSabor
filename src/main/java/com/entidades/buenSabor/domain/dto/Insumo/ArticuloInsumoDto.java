@@ -25,4 +25,5 @@ public class ArticuloInsumoDto extends BaseDto {
     private Boolean esParaElaborar;
     private CategoriaDto categoria;
     private Set<ImagenArticuloDto> imagenes;
+    private Long sucursal_id;
 }

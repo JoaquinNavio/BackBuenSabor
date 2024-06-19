@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ArticuloInsumoRepository extends BaseRepository<ArticuloInsumo, Long> {
     List<ArticuloInsumo> findByEsParaElaborarFalse();
+    List<ArticuloInsumo> findBySucursalId(Long sucursalId);
 }

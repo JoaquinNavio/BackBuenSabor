@@ -22,4 +22,5 @@ public class ArticuloInsumoCreateDto {
     private Boolean esParaElaborar;
     private Long idCategoria;
     private MultipartFile[] files;
+    private Long sucursal_id;
 }
