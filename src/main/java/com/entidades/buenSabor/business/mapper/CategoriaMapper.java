@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
 public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaCreateDto> {
 
     @Mapping(source = "sucursal.id", target = "sucursal_id")
-    @Mapping(target = "categoriaPadre", ignore = true) // Ignorar categoría padre aquí, lo manejaremos manualmente en el servicio
+    @Mapping(target = "categoriaPadre") // Ignorar categoría padre aquí, lo manejaremos manualmente en el servicio
     CategoriaDto toDTO(Categoria categoria);
 
     @Mapping(source = "sucursal_id", target = "sucursal.id")

@@ -14,6 +14,8 @@ public interface CategoriaRepository extends BaseRepository<Categoria,Long>{
     @Query("SELECT cat FROM Categoria cat WHERE cat.esInsumo = false and cat.eliminado is false")
     List<Categoria> getAllNoElaborar();
 
-    List<Categoria> findBySucursalId(Long sucursalId);
+    //añado la logica para que no traiga los eliminados
+    @Query("SELECT cat FROM Categoria cat WHERE cat.sucursal.id = :sucursalId AND cat.eliminado = false")
+    List<Categoria> findBySucursalId(@Param("sucursalId") Long sucursalId);
 
 }
