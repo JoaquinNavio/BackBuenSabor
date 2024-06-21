@@ -14,4 +14,6 @@ public interface PromocionRepository extends BaseRepository<Promocion,Long>{
     @Query("SELECT amd FROM PromocionDetalle amd WHERE amd.promocion.id = :id and amd.eliminado is false")
     List<PromocionDetalle> findDetallesById(@Param("id") Long id);
 
+    List<Promocion> findBySucursalId(Long sucursalId);
+
 }

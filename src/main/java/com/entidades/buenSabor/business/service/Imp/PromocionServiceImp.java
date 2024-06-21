@@ -113,4 +113,9 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
         return updatedPromocion;
     }
 
+    @Override
+    public List<Promocion> findBySucursalId(Long sucursalId) {
+        return ((PromocionRepository) baseRepository).findBySucursalId(sucursalId);
+    }
+
 }

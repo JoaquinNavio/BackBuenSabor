@@ -61,4 +61,8 @@ public class PromocionFacadeImp extends BaseFacadeImp<Promocion, PromocionDto, P
         dto.setSucursal_id(promocion.getSucursal() != null ? promocion.getSucursal().getId() : null);
         return dto;
     }
+
+    public List<Promocion> getBySucursalId(Long sucursalId) {
+        return ((PromocionService) baseService).findBySucursalId(sucursalId);
+    }
 }

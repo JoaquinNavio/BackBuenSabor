@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/promociones")
@@ -49,5 +50,14 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
         Promocion updatedPromocion = facade.updateWithDetails(id, dto);
         PromocionDto updatedDto = facade.convertToDto(updatedPromocion);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/sucursal/{sucursalId}")
+    public ResponseEntity<List<PromocionDto>> getBySucursalId(@PathVariable Long sucursalId) {
+        List<Promocion> promociones = facade.getBySucursalId(sucursalId);
+        List<PromocionDto> promocionesDto = promociones.stream()
+                .map(facade::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(promocionesDto);
     }
 }
