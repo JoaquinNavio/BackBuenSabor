@@ -25,7 +25,7 @@ public class ArticuloManufacturadoDto extends BaseDto {
     private Double precioVenta;
     private String preparacion;
     private UnidadMedidaDto unidadMedida;
-    //private ImageDto image;
     private CategoriaDto categoria;
     private Set<ImagenArticuloDto> imagenes;
+    private Long sucursal_id;
 }

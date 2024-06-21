@@ -31,4 +31,6 @@ public interface ArticuloManufacturadoService extends BaseService<ArticuloManufa
 
     List<ArticuloManufacturadoEcommerseDto> getManufacturadosEcommerse();
 
+    List<ArticuloManufacturado> findBySucursalId(Long sucursalId);
+
 }

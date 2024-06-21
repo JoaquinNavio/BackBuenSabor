@@ -28,6 +28,6 @@ public class ArticuloManufacturadoCreateDto {
     private Long idUnidadMedida;
     private Long idCategoria;
     private MultipartFile[] files;
-
     private List<ArticuloManufacturadoDetalleCreateDto> detalles;
+    private Long sucursal_id;
 }
