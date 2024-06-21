@@ -39,7 +39,7 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<PromocionDto> createWithDetails(@RequestBody PromocionCreateDto dto) {
         Promocion createdPromocion = facade.createWithDetails(dto);
-        PromocionDto createdDto = convertToDto(createdPromocion);
+        PromocionDto createdDto = facade.convertToDto(createdPromocion);
         return new ResponseEntity<>(createdDto, HttpStatus.CREATED);
     }
 
@@ -47,21 +47,7 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<PromocionDto> updateWithDetails(@PathVariable Long id, @RequestBody PromocionCreateDto dto) {
         Promocion updatedPromocion = facade.updateWithDetails(id, dto);
-        PromocionDto updatedDto = convertToDto(updatedPromocion);
+        PromocionDto updatedDto = facade.convertToDto(updatedPromocion);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
-    }
-
-    private PromocionDto convertToDto(Promocion promocion) {
-        PromocionDto dto = new PromocionDto();
-        dto.setId(promocion.getId());
-        dto.setDenominacion(promocion.getDenominacion());
-        dto.setFechaDesde(promocion.getFechaDesde());
-        dto.setFechaHasta(promocion.getFechaHasta());
-        dto.setHoraDesde(promocion.getHoraDesde());
-        dto.setHoraHasta(promocion.getHoraHasta());
-        dto.setDescripcionDescuento(promocion.getDescripcionDescuento());
-        dto.setPrecioPromocional(promocion.getPrecioPromocional());
-        dto.setTipoPromocion(promocion.getTipoPromocion());
-        return dto;
     }
 }
