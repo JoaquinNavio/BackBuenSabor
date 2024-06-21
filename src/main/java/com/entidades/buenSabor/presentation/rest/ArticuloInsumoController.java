@@ -29,6 +29,7 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
     @PostMapping("/crearCompleto")
     //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloInsumoDto> createCompleto(@ModelAttribute ArticuloInsumoCreateDto articuloDto) {
+        System.out.println(articuloDto.toString());
         System.out.println("INICIO CREATE Articulo Insumo - BaseController");
         return facade.createCompleto(articuloDto);
     }

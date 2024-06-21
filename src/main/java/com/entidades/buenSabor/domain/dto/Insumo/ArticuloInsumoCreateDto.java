@@ -12,6 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ArticuloInsumoCreateDto {
     private String denominacion;
     private Double precioVenta;
