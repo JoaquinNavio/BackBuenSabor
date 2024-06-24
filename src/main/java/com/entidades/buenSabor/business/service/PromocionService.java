@@ -12,4 +12,5 @@ public interface PromocionService extends BaseService<Promocion, Long> {
     List<PromocionDetalle> getDetallesById(Long id);
     Promocion createWithDetails(PromocionCreateDto dto);
     Promocion updateWithDetails(Long id, PromocionCreateDto dto);
+    List<Promocion> findBySucursalId(Long sucursalId);
 }

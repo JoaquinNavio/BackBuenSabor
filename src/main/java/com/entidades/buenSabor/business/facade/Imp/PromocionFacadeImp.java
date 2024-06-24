@@ -45,4 +45,24 @@ public class PromocionFacadeImp extends BaseFacadeImp<Promocion, PromocionDto, P
     public Promocion updateWithDetails(Long id, PromocionCreateDto dto) {
         return ((PromocionService) baseService).updateWithDetails(id, dto);
     }
+
+
+    public PromocionDto convertToDto(Promocion promocion) {
+        PromocionDto dto = new PromocionDto();
+        dto.setId(promocion.getId());
+        dto.setDenominacion(promocion.getDenominacion());
+        dto.setFechaDesde(promocion.getFechaDesde());
+        dto.setFechaHasta(promocion.getFechaHasta());
+        dto.setHoraDesde(promocion.getHoraDesde());
+        dto.setHoraHasta(promocion.getHoraHasta());
+        dto.setDescripcionDescuento(promocion.getDescripcionDescuento());
+        dto.setPrecioPromocional(promocion.getPrecioPromocional());
+        dto.setTipoPromocion(promocion.getTipoPromocion());
+        dto.setSucursal_id(promocion.getSucursal() != null ? promocion.getSucursal().getId() : null);
+        return dto;
+    }
+
+    public List<Promocion> getBySucursalId(Long sucursalId) {
+        return ((PromocionService) baseService).findBySucursalId(sucursalId);
+    }
 }

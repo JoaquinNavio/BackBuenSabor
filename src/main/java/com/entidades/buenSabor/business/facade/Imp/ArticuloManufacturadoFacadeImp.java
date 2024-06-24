@@ -4,18 +4,23 @@ import com.entidades.buenSabor.business.facade.ArticuloManufacturadoFacade;
 import com.entidades.buenSabor.business.facade.Base.BaseFacadeImp;
 import com.entidades.buenSabor.business.mapper.ArticuloManufacturadoDetalleMapper;
 import com.entidades.buenSabor.business.mapper.BaseMapper;
+import com.entidades.buenSabor.business.mapper.CategoriaMapper;
+import com.entidades.buenSabor.business.mapper.UnidadMedidaMapper;
 import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEcommerseDto;
 import com.entidades.buenSabor.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
+import com.entidades.buenSabor.domain.dto.Insumo.ImagenArticuloDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /*ArticuloManufacturadoFacadeImp:
 Esta clase implementa la interfaz ArticuloManufacturadoFacade.
@@ -43,6 +48,12 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
         super(baseService, baseMapper);
         this.articuloManufacturadoDetalleMapper = articuloManufacturadoDetalleMapper;
     }
+
+    @Autowired
+    private UnidadMedidaMapper unidadMedidaMapper;
+
+    @Autowired
+    private CategoriaMapper categoriaMapper;
 
     /*getDetallesById(Long id):
     Este método sobrescrito de la interfaz ArticuloManufacturadoFacade
@@ -86,5 +97,33 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
        return ((ArticuloManufacturadoService) baseService).getManufacturadosEcommerse() ;
     }
 
+    public List<ArticuloManufacturado> getBySucursalId(Long sucursalId) {
+        return ((ArticuloManufacturadoService) baseService).findBySucursalId(sucursalId);
+    }
+
+    public ArticuloManufacturadoDto convertToDto(ArticuloManufacturado articuloManufacturado) {
+        ArticuloManufacturadoDto dto = new ArticuloManufacturadoDto();
+        dto.setId(articuloManufacturado.getId());
+        dto.setDenominacion(articuloManufacturado.getDenominacion());
+        dto.setDescripcion(articuloManufacturado.getDescripcion());
+        dto.setTiempoEstimadoMinutos(articuloManufacturado.getTiempoEstimadoMinutos());
+        dto.setPrecioVenta(articuloManufacturado.getPrecioVenta());
+        dto.setPreparacion(articuloManufacturado.getPreparacion());
+        dto.setUnidadMedida(unidadMedidaMapper.toDTO(articuloManufacturado.getUnidadMedida()));
+        dto.setCategoria(categoriaMapper.toDTO(articuloManufacturado.getCategoria()));
+        dto.setSucursal_id(articuloManufacturado.getSucursal() != null ? articuloManufacturado.getSucursal().getId() : null);
+
+        // Convertir imágenes
+        Set<ImagenArticuloDto> imagenesDto = articuloManufacturado.getImagenes().stream()
+                .map(imagen -> {
+                    ImagenArticuloDto imagenDto = new ImagenArticuloDto();
+                    imagenDto.setId(imagen.getId());
+                    imagenDto.setUrl(imagen.getUrl());
+                    return imagenDto;
+                }).collect(Collectors.toSet());
+        dto.setImagenes(imagenesDto);
+
+        return dto;
+    }
 
 }

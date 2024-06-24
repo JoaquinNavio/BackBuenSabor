@@ -20,4 +20,6 @@ public interface ArticuloManufacturadoRepository extends BaseRepository<Articulo
     Utiliza la anotación @Query para especificar la consulta y @Param para vincular el parámetro.*/
     @Query("SELECT amd FROM ArticuloManufacturadoDetalle amd WHERE amd.articuloManufacturado.id = :id and amd.eliminado is false")
     List<ArticuloManufacturadoDetalle> findDetallesById(@Param("id") Long id);
+
+    List<ArticuloManufacturado> findBySucursalId(Long sucursalId);
 }

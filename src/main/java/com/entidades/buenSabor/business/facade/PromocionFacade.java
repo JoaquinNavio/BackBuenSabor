@@ -15,5 +15,7 @@ public interface PromocionFacade extends BaseFacade<PromocionDto, PromocionCreat
     List<PromocionDetalleDto> getDetallesById(Long id);
     Promocion createWithDetails(PromocionCreateDto dto);
     Promocion updateWithDetails(Long id,PromocionCreateDto dto);
+
+    List<Promocion> getBySucursalId(Long sucursalId);
 }
 

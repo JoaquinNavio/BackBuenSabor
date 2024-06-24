@@ -24,4 +24,5 @@ public class PromocionCreateDto {
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
     private Set<PromocionDetalleCreateDto> detalles;
+    private Long sucursal_id;
 }

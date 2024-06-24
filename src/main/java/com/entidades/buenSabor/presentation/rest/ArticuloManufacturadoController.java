@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -33,26 +34,18 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
     }
 
     @PostMapping("/createWithDetails")
-    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
+    //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloManufacturadoDto> createWithDetails(@ModelAttribute ArticuloManufacturadoCreateDto dto) {
-        System.out.println("INICIANDO CREATE WITH DETAILS createWithDetails(@RequestBody ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoController");
-        System.out.println("Creando un nuevo ArticuloManufacturado llamando al método createWithDetails(DTO) del FACADE - ArticuloManufacturadoController");
         ArticuloManufacturado createdArticuloManufacturado = facade.createWithDetails(dto);
-        System.out.println("Convierte el ArticuloManufacturado creado a su DTO correspondiente llamando a convertToDto(createdArticuloManufacturado) propio del controlador - ArticuloManufacturadoController ");
-        ArticuloManufacturadoDto createdDto = convertToDto(createdArticuloManufacturado);
-        System.out.println("Devuelve el DTO creaado");
+        ArticuloManufacturadoDto createdDto = facade.convertToDto(createdArticuloManufacturado);
         return new ResponseEntity<>(createdDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/updateWithDetails/{id}")
-    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
+    //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloManufacturadoDto> updateWithDetails(@PathVariable Long id, @RequestBody ArticuloManufacturadoCreateDto dto) {
-        System.out.println("INICIANDO UPDATE WITH DETAILS updateWithDetails(@PathVariable Long id, @RequestBody ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoController");
-        System.out.println("Actualizando y pasando createDto a ArticuloManufacturado y llamando al método updateWithDetails(id, dto) del FACADE - ArticuloManufacturadoController");
         ArticuloManufacturado updatedArticuloManufacturado = facade.updateWithDetails(id, dto);
-        System.out.println("Convierte el ArticuloManufacturado actualizado a su DTO correspondiente llamando a convertToDto(updatedArticuloManufacturado) propio del controlador - ArticuloManufacturadoController ");
-        ArticuloManufacturadoDto updatedDto = convertToDto(updatedArticuloManufacturado);
-        System.out.println("Devuelve el DTO actualizado");
+        ArticuloManufacturadoDto updatedDto = facade.convertToDto(updatedArticuloManufacturado);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
     }
 
@@ -69,15 +62,15 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
         return ResponseEntity.ok(articulos);
     }
 
-    private ArticuloManufacturadoDto convertToDto(ArticuloManufacturado articuloManufacturado) {
-        System.out.println("Convirtiendo a DTO la entidad - covertToDto() - ArticuloManufacturadoController");
-        ArticuloManufacturadoDto dto = new ArticuloManufacturadoDto();
-        dto.setId(articuloManufacturado.getId());
-        dto.setDenominacion(articuloManufacturado.getDenominacion());
-        dto.setDescripcion(articuloManufacturado.getDescripcion());
-        dto.setTiempoEstimadoMinutos(articuloManufacturado.getTiempoEstimadoMinutos());
-        dto.setPrecioVenta(articuloManufacturado.getPrecioVenta());
-        dto.setPreparacion(articuloManufacturado.getPreparacion());
-        return dto;
+    @GetMapping("/sucursal/{sucursalId}")
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getBySucursalId(@PathVariable Long sucursalId) {
+        List<ArticuloManufacturado> articulos = facade.getBySucursalId(sucursalId);
+        List<ArticuloManufacturadoDto> articulosDto = articulos.stream()
+                .map(facade::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(articulosDto);
     }
+
+
+
 }

@@ -1,6 +1,5 @@
 package com.entidades.buenSabor.business.service.Imp;
 
-import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.mapper.CategoriaMapper;
 import com.entidades.buenSabor.business.mapper.UnidadMedidaMapper;
 import com.entidades.buenSabor.business.service.*;
@@ -11,10 +10,11 @@ import com.entidades.buenSabor.domain.dto.Insumo.ImagenArticuloDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturadoDetalle;
 import com.entidades.buenSabor.domain.entities.ImagenArticulo;
+import com.entidades.buenSabor.domain.entities.Sucursal;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
 import com.entidades.buenSabor.repositories.ImagenArticuloRepository;
-import jdk.swing.interop.SwingInterOpUtils;
+import com.entidades.buenSabor.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +71,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     @Autowired
     private CategoriaMapper categoriaMapper;
 
+    @Autowired
+    private SucursalRepository sucursalRepository;
+
     /*getDetallesById(Long id):
     Este método devuelve una lista de detalles de artículo manufacturado
     asociados a un artículo manufacturado específico identificado por su ID.*/
@@ -93,11 +96,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     dentro de ese método hasta el momento de la excepción.*/
     @Transactional
     public ArticuloManufacturado createWithDetails(ArticuloManufacturadoCreateDto dto) {
-        System.out.println("EJECUTANDO createWithDetails(ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoServiceImp");
-
-        // Crear ArticuloManufacturado
         ArticuloManufacturado articuloManufacturado = new ArticuloManufacturado();
-        System.out.println("Creo ArticuloManufactuado y seteo los datos del DTO - ArticuloManufacturadoServiceImp");
         articuloManufacturado.setDenominacion(dto.getDenominacion());
         articuloManufacturado.setDescripcion(dto.getDescripcion());
         articuloManufacturado.setTiempoEstimadoMinutos(dto.getTiempoEstimadoMinutos());
@@ -105,41 +104,42 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         articuloManufacturado.setPreparacion(dto.getPreparacion());
         articuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         articuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
-        // Guardar ArticuloManufacturado
-        System.out.println("Guardando ArticuloManufacturado con save(articuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp");
+
+        if (dto.getSucursal_id() != null) {
+            Sucursal sucursal = sucursalRepository.findById(dto.getSucursal_id())
+                    .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"));
+            articuloManufacturado.setSucursal(sucursal);
+        }
+
         ArticuloManufacturado savedArticuloManufacturado = baseRepository.save(articuloManufacturado);
 
         Set<ImagenArticulo> imagenesArticulo = new HashSet<>();
         try {
             for (MultipartFile file : dto.getFiles()) {
-
                 ImagenArticulo imagenArticulo = new ImagenArticulo();
                 imagenArticulo.setName(file.getOriginalFilename());
                 imagenArticulo.setUrl(cloudinaryService.uploadFile(file));
-                ArticuloManufacturado articuloManufacturadoo = new ArticuloManufacturado();
-                articuloManufacturadoo.setId(articuloManufacturado.getId());
-                imagenArticulo.setArticulo(articuloManufacturadoo);
-
-                // Agregar la URL a la lista de URLs
+                imagenArticulo.setArticulo(savedArticuloManufacturado);
                 imagenesArticulo.add(imagenArticuloRepository.save(imagenArticulo));
-            };
-            articuloManufacturado.setImagenes(imagenesArticulo);
+            }
+            savedArticuloManufacturado.setImagenes(imagenesArticulo);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error al guardar las imagenes de articulos");
+            throw new RuntimeException("Error al guardar las imágenes de artículos");
         }
 
         List<ArticuloManufacturadoDetalle> detalles = dto.getDetalles().stream().map(detalleDto -> {
             ArticuloManufacturadoDetalle detalle = new ArticuloManufacturadoDetalle();
             detalle.setCantidad(detalleDto.getCantidad());
             detalle.setArticuloInsumo(articuloInsumoService.getById(detalleDto.getIdArticuloInsumo()));
-            detalle.setArticuloManufacturado(articuloManufacturado);
+            detalle.setArticuloManufacturado(savedArticuloManufacturado);
             return detalle;
         }).collect(Collectors.toList());
 
         detalleRepository.saveAll(detalles);
         return savedArticuloManufacturado;
     }
+
 
     @Override
     public ArticuloManufacturado vincularImagenes(MultipartFile[] files, Long id) {
@@ -151,15 +151,9 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     @Override
     @Transactional
     public ArticuloManufacturado updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto) {
-        System.out.println("EJECUTANDO updateWithDetails(Long id, ArticuloManufacturadoCreateDto dto) - ArticuloManufacturadoServiceImp");
-
-        // Obtener el artículo manufacturado existente por su ID
-        System.out.println("Obteniendo el ArticuloManufacturado con findById(id) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp");
         ArticuloManufacturado existingArticuloManufacturado = baseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ArticuloManufacturado not found with id: " + id));
 
-        // Actualizar los atributos del artículo manufacturado con los nuevos valores del DTO
-        System.out.println("Actualizando los cambios del dto - ArticuloManufacturadoServiceImp");
         existingArticuloManufacturado.setDenominacion(dto.getDenominacion());
         existingArticuloManufacturado.setDescripcion(dto.getDescripcion());
         existingArticuloManufacturado.setTiempoEstimadoMinutos(dto.getTiempoEstimadoMinutos());
@@ -168,38 +162,22 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         existingArticuloManufacturado.setUnidadMedida(unidadMedidaService.getById(dto.getIdUnidadMedida()));
         existingArticuloManufacturado.setCategoria(categoriaService.getById(dto.getIdCategoria()));
 
-        /*Long idImageToDelete = null;
-        if (existingArticuloManufacturado.getImage() != null && !existingArticuloManufacturado.getImage().getId().equals(dto.getIdImage())) {
-            idImageToDelete = existingArticuloManufacturado.getImage().getId();
+        if (dto.getSucursal_id() != null) {
+            Sucursal sucursal = sucursalRepository.findById(dto.getSucursal_id())
+                    .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"));
+            existingArticuloManufacturado.setSucursal(sucursal);
         }
-        if (dto.getIdImage() != null) {
-            Image image = new Image();
-            image.setId(dto.getIdImage());
-            existingArticuloManufacturado.setImage(image);
-        } else {
-            existingArticuloManufacturado.setImage(null);
-        }*/
 
-        // Guardar los cambios en el artículo manufacturado
-        System.out.println("Guardando los cambios con save(existingArticuloManufacturado) de ArticuloManufacturadoRepository - ArticuloManufacturadoServiceImp ");
         ArticuloManufacturado updatedArticuloManufacturado = baseRepository.save(existingArticuloManufacturado);
 
-
-        /// Obtener los detalles existentes del artículo manufacturado
-        System.out.println("Obteniendo los detalles del ArticuloManufacturado - ArticuloManufacturadoServiceImp ");
         Map<Long, ArticuloManufacturadoDetalle> existingDetallesMap = existingArticuloManufacturado.getDetalles().stream()
                 .collect(Collectors.toMap(ArticuloManufacturadoDetalle::getId, detalle -> detalle));
 
-
-        // Actualizar y crear los detalles del artículo manufacturado
-        System.out.println("Actualizando los detalles del ArticuloManufacturado - ArticuloManufacturadoServiceImp ");
         List<ArticuloManufacturadoDetalle> nuevosDetalles = dto.getDetalles().stream().map(detalleDto -> {
             ArticuloManufacturadoDetalle detalle;
             if (detalleDto.getIdDetalle() != null && existingDetallesMap.containsKey(detalleDto.getIdDetalle())) {
-                // Actualizar el detalle existente
                 detalle = existingDetallesMap.get(detalleDto.getIdDetalle());
             } else {
-                // Crear un nuevo detalle
                 detalle = new ArticuloManufacturadoDetalle();
                 detalle.setArticuloManufacturado(updatedArticuloManufacturado);
             }
@@ -208,10 +186,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             return detalle;
         }).collect(Collectors.toList());
 
-        // Guardar los detalles actualizados y nuevos
-        System.out.println("Guardando detalles - ArticuloManufacturadoServiceImp");
         detalleRepository.saveAll(nuevosDetalles);
-        System.out.println("Retornando detalles - ArticuloManufacturadoServiceImp");
         return updatedArticuloManufacturado;
     }
 
@@ -270,6 +245,11 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             imagenesDto.add(imagenDto);
         }
         return imagenesDto;
+    }
+
+    @Override
+    public List<ArticuloManufacturado> findBySucursalId(Long sucursalId) {
+        return baseRepository.findBySucursalId(sucursalId);
     }
 
 }

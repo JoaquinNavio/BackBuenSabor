@@ -29,4 +29,6 @@ public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufact
     ArticuloManufacturado updateWithDetails(Long id,ArticuloManufacturadoCreateDto dto);
 
     List<ArticuloManufacturadoEcommerseDto> getManufacturadosEcommerse();
+
+    List<ArticuloManufacturado> getBySucursalId(Long sucursalId);
 }

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/promociones")
@@ -39,7 +40,7 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<PromocionDto> createWithDetails(@RequestBody PromocionCreateDto dto) {
         Promocion createdPromocion = facade.createWithDetails(dto);
-        PromocionDto createdDto = convertToDto(createdPromocion);
+        PromocionDto createdDto = facade.convertToDto(createdPromocion);
         return new ResponseEntity<>(createdDto, HttpStatus.CREATED);
     }
 
@@ -47,21 +48,16 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<PromocionDto> updateWithDetails(@PathVariable Long id, @RequestBody PromocionCreateDto dto) {
         Promocion updatedPromocion = facade.updateWithDetails(id, dto);
-        PromocionDto updatedDto = convertToDto(updatedPromocion);
+        PromocionDto updatedDto = facade.convertToDto(updatedPromocion);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
     }
 
-    private PromocionDto convertToDto(Promocion promocion) {
-        PromocionDto dto = new PromocionDto();
-        dto.setId(promocion.getId());
-        dto.setDenominacion(promocion.getDenominacion());
-        dto.setFechaDesde(promocion.getFechaDesde());
-        dto.setFechaHasta(promocion.getFechaHasta());
-        dto.setHoraDesde(promocion.getHoraDesde());
-        dto.setHoraHasta(promocion.getHoraHasta());
-        dto.setDescripcionDescuento(promocion.getDescripcionDescuento());
-        dto.setPrecioPromocional(promocion.getPrecioPromocional());
-        dto.setTipoPromocion(promocion.getTipoPromocion());
-        return dto;
+    @GetMapping("/sucursal/{sucursalId}")
+    public ResponseEntity<List<PromocionDto>> getBySucursalId(@PathVariable Long sucursalId) {
+        List<Promocion> promociones = facade.getBySucursalId(sucursalId);
+        List<PromocionDto> promocionesDto = promociones.stream()
+                .map(facade::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(promocionesDto);
     }
 }

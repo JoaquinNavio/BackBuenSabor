@@ -25,5 +25,6 @@ public class PromocionDto extends BaseDto {
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
     private List<ArticuloManufacturadoDetalleDto> articulos; // Lista de artículos en la promoción
+    private Long sucursal_id;
 
 }
