@@ -13,6 +13,7 @@ import com.entidades.buenSabor.domain.dto.Empresa.EmpresaLargeDto;
 import com.entidades.buenSabor.domain.entities.Empresa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EmpresaFacadeImpl extends BaseFacadeImp<Empresa, EmpresaDto, EmpresaCreateDto, EmpresaCreateDto,Long> implements EmpresaFacade {
@@ -42,4 +43,22 @@ public class EmpresaFacadeImpl extends BaseFacadeImp<Empresa, EmpresaDto, Empres
         Empresa empresaCreada = baseService.create(empresa);
         return baseMapper.toDTO(empresaCreada);
     }
+
+    @Override
+    public EmpresaDto update(EmpresaCreateDto dto, Long id) {
+        Empresa empresa = baseService.getById(id);
+        baseMapper.toEntityCreate(dto);
+        empresa.setNombre(dto.getNombre());
+        empresa.setRazonSocial(dto.getRazonSocial());
+        empresa.setCuil(dto.getCuil());
+        MultipartFile imagen = dto.getImagen();
+        if (imagen != null && !imagen.isEmpty()) {
+            String urlImagen = cloudinaryService.uploadFile(imagen);
+            empresa.setUrl_imagen(urlImagen);
+        }
+
+        Empresa empresaActualizada = baseService.update(empresa, id);
+        return baseMapper.toDTO(empresaActualizada);
+    }
+
 }
