@@ -13,10 +13,13 @@ import com.entidades.buenSabor.domain.dto.Empresa.EmpresaDto;
 import com.entidades.buenSabor.domain.entities.Empleado;
 import com.entidades.buenSabor.domain.entities.Empresa;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
+import com.entidades.buenSabor.repositories.DomicilioRepository;
+import com.entidades.buenSabor.repositories.EmpleadoRepository;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +30,11 @@ import java.util.Optional;
 @RequestMapping("/empleado")
 @CrossOrigin("*")
 public class EmpleadoController extends BaseControllerImp<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto,Long, EmpleadoFacadeImp> {
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
 
+    @Autowired
+    private DomicilioRepository domicilioRepository;
     public EmpleadoController(EmpleadoFacadeImp facade) {
         super(facade);
     }
@@ -47,9 +54,10 @@ public class EmpleadoController extends BaseControllerImp<Empleado, EmpleadoDto,
         return ResponseEntity.ok(empleadoDtos);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/crear", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmpleadoDto> create(@ModelAttribute EmpleadoCreateDto empleadoDto) {
-        return ResponseEntity.ok(facade.create(empleadoDto));
+        EmpleadoDto createdEmpleado = facade.create(empleadoDto);
+        return ResponseEntity.ok(createdEmpleado);
     }
 
     @GetMapping("/email/{email}")
@@ -58,4 +66,14 @@ public class EmpleadoController extends BaseControllerImp<Empleado, EmpleadoDto,
         return empleadoOptional.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<EmpleadoDto> edit(@PathVariable Long id, @ModelAttribute EmpleadoCreateDto entity, @RequestParam(value = "imagen", required = false) MultipartFile imagenFile) {
+        if (id == null) {
+            throw new IllegalArgumentException("The given id must not be null");
+        }
+        return ResponseEntity.ok(facade.update(entity, id, imagenFile));
+    }
+
 }

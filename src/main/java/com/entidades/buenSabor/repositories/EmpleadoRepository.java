@@ -10,8 +10,11 @@ import java.util.Optional;
 
 @Repository
 public interface EmpleadoRepository extends BaseRepository<Empleado,Long> {
+
+    @Query("SELECT e FROM Empleado e WHERE e.sucursal.id = :sucursalId AND e.eliminado = false")
     List<Empleado> findBySucursalId(Long sucursalId);
-    @Query("SELECT e FROM Empleado e WHERE e.email = :email")
+
+    @Query("SELECT e FROM Empleado e WHERE e.email = :email AND e.eliminado = false")
     Optional<Empleado> findByEmail(@Param("email") String email); // Agregar este método
 
 }

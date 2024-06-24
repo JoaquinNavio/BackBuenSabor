@@ -78,17 +78,6 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
             throw new RuntimeException("Error al guardar las imagenes de articulos");
         }
 
-        /*
-        Set<ImagenArticulo> imagenes = insumoCreateDto.getImages().stream().map(imagenDto -> {
-            ImagenArticulo imagen = new ImagenArticulo();
-            imagen.setUrl(imagenDto.getUrl());
-            imagen.setArticulo(articuloSaved);
-            return imagen;
-        }).collect(Collectors.toSet());
-
-        Set<ImagenArticulo> imagenesSet = new HashSet<>(imagenArticuloRepository.saveAll(imagenes));
-        articuloSaved.setImagenes(imagenesSet);
-         */
 
         ArticuloInsumoDto articuloDto = articuloInsumoMapper.toDTO(articuloSaved);
         System.out.println("insumoDto");

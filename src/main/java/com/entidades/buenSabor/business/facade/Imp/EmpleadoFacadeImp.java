@@ -18,9 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-
 @Service
-public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto,Long> implements EmpleadoFacade {
+public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto, Long> implements EmpleadoFacade {
 
     private final EmpleadoServiceImp empleadoServiceImp;
     private final EmpleadoMapper empleadoMapper;
@@ -35,7 +34,6 @@ public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, Empl
         this.empleadoServiceImp = empleadoServiceImp;
         this.empleadoMapper = empleadoMapper;
     }
-
 
     @Override
     public List<Empleado> getEmpleadosBySucursal(Long idSucursal) {
@@ -53,21 +51,16 @@ public class EmpleadoFacadeImp extends BaseFacadeImp<Empleado, EmpleadoDto, Empl
         Empleado empleado = empleadoMapper.toEntityCreate(empleadoCreateDto);
         MultipartFile imagenFile = empleadoCreateDto.getImagen();
 
-        if (empleadoCreateDto.getDomicilios() != null) {
-            List<Domicilio> domicilios = empleadoMapper.toDomicilios(empleadoCreateDto.getDomicilios());
-            for (Domicilio domicilio : domicilios) {
-                domicilio.setEmpleado(empleado);
-                domicilio.setLocalidad(localidadRepository.findById(domicilio.getLocalidad().getId())
-                        .orElseThrow(() -> new RuntimeException("Localidad no encontrada"))); // Agregar esta línea para asegurar la asignación de Localidad
-            }
-            empleado.setDomicilios(new HashSet<>(domicilios));
-        }
-
         Empleado savedEmpleado = empleadoServiceImp.create(empleado, imagenFile);
         return empleadoMapper.toDTO(savedEmpleado);
     }
 
 
+    public EmpleadoDto update(EmpleadoCreateDto empleadoCreateDto, Long id, MultipartFile imagenFile) {
+        Empleado empleado = baseMapper.toEntityCreate(empleadoCreateDto);
+        Empleado updatedEmpleado = empleadoServiceImp.update(id, empleado, imagenFile);
+        return baseMapper.toDTO(updatedEmpleado);
+    }
 
     public Optional<EmpleadoDto> getByEmail(String email) {
         Optional<Empleado> empleado = empleadoServiceImp.getByEmail(email);

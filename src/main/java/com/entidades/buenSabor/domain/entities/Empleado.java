@@ -27,7 +27,5 @@ public class Empleado extends Persona{
     @JoinColumn(name = "sucursal_id")
     private Sucursal sucursal;
 
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)
-    private Set<Domicilio> domicilios = new HashSet<>();
 
 }

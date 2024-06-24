@@ -24,5 +24,5 @@ public class EmpleadoDto extends BaseDto {
     private Rol tipoEmpleado;
     private Long sucursal_id;
     private ImagenPersona imagen;
-    private List<DomicilioDto> domicilios;
+
 }
