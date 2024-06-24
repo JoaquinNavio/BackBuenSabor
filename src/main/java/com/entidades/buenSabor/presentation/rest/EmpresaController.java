@@ -27,6 +27,10 @@ public class EmpresaController extends BaseControllerImp<Empresa, EmpresaDto, Em
     @Override
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EmpresaDto> create(@ModelAttribute EmpresaCreateDto entity) {
+        System.out.println("Llegada para crear Sucursal");
+        System.out.println("SUCURSAL:");
+        System.out.println(entity.toString());
+
         return ResponseEntity.ok(facade.createNew(entity));
     }
 
