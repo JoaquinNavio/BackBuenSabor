@@ -27,10 +27,15 @@ public class SucursalFacadeImp extends BaseFacadeImp<Sucursal, SucursalDto, Sucu
 
     @Override
     public SucursalDto createNew(SucursalCreateDto dto) {
+        System.out.println("DTO ANTES DE SACAR IMAGEN");
+        System.out.println(dto.toString());
         Sucursal sucursal = baseMapper.toEntityCreate(dto);
         if (dto.getImagen() != null && !dto.getImagen().isEmpty()) {
             sucursal.setUrl_imagen(cloudinaryService.uploadFile(dto.getImagen()));
         }
+        System.out.println("SUCURSAL ANTES DE GUARDAR");
+        System.out.println(sucursal.toString());
+
         Sucursal sucursalCreada = baseService.create(sucursal);
         return baseMapper.toDTO(sucursalCreada);
     }
