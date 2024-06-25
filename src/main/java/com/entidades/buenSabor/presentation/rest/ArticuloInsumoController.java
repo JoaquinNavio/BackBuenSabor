@@ -26,6 +26,7 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
     @Autowired
     private ArticuloInsumoMapper articuloInsumoMapper;
 
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @PostMapping("/crearCompleto")
     //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloInsumoDto> createCompleto(@ModelAttribute ArticuloInsumoCreateDto articuloDto) {

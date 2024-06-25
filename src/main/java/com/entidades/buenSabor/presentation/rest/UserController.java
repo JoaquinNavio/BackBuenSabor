@@ -6,6 +6,7 @@ import com.entidades.buenSabor.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,11 +25,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>("Usuario eliminado con éxito", HttpStatus.OK);
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {

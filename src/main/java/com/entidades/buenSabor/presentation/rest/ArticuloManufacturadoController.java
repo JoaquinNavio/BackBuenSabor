@@ -25,14 +25,14 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImp facade) {
         super(facade);
     }
-
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @GetMapping("/{id}/Detalles")
     public ResponseEntity<List<ArticuloManufacturadoDetalleDto>> getDetallesById(@PathVariable Long id) {
         System.out.println("INICIANDO GET DETALLES BY ID getDetallesById(@PathVariable Long id) - ArticuloManufacturadoController");
         System.out.println("Llamando a FACADE getDetallesById(id) - ArticuloManufacturadoController");
         return ResponseEntity.ok(facade.getDetallesById(id));
     }
-
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @PostMapping("/createWithDetails")
     //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloManufacturadoDto> createWithDetails(@ModelAttribute ArticuloManufacturadoCreateDto dto) {
@@ -40,7 +40,7 @@ public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloM
         ArticuloManufacturadoDto createdDto = facade.convertToDto(createdArticuloManufacturado);
         return new ResponseEntity<>(createdDto, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @PutMapping("/updateWithDetails/{id}")
     //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<ArticuloManufacturadoDto> updateWithDetails(@PathVariable Long id, @RequestBody ArticuloManufacturadoCreateDto dto) {

@@ -30,6 +30,7 @@ public class SucursalController extends BaseControllerImp<Sucursal, SucursalDto,
         }
     }
 
+
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SucursalDto> update(@PathVariable Long id, @ModelAttribute SucursalCreateDto entity) {
         try {

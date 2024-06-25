@@ -51,7 +51,7 @@ public class CategoriaController extends BaseControllerImp<Categoria, CategoriaD
     }
 
     @PostMapping
-    //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @Override
     public ResponseEntity<CategoriaDto> create(@RequestBody CategoriaCreateDto entity) {
         return ResponseEntity.ok(facade.createNew(entity));
