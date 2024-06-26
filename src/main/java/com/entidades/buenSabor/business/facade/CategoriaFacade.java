@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface CategoriaFacade extends BaseFacade<CategoriaDto, CategoriaCreateDto, CategoriaCreateDto, Long> {
     List<CategoriaDto> getAllNoElaborar();
+    List<CategoriaDto> getAllElaborar();
 }

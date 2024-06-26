@@ -65,4 +65,10 @@ public class CategoriaFacadeImp extends BaseFacadeImp<Categoria, CategoriaDto, C
         List<Categoria> categorias =  categoriaService.getAllNoElaborar();
         return baseMapper.toDTOsList(categorias);
     }
+
+    @Override
+    public List<CategoriaDto> getAllElaborar(){
+        List<Categoria> categorias =  categoriaService.getAllElaborar();
+        return baseMapper.toDTOsList(categorias);
+    }
 }
