@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
@@ -55,6 +55,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         // Verificar que el gmail sea único
@@ -82,6 +83,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @PutMapping("/users/{id}/role")
     public ResponseEntity<String> updateUserRole(@PathVariable Long id, @RequestBody String newRole) {
         String role = newRole.replace("\"", ""); // Remover cualquier comilla adicional

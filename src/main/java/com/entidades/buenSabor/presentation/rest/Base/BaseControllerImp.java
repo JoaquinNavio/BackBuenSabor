@@ -96,7 +96,7 @@ public abstract class BaseControllerImp <E extends Base,D extends BaseDto, DC, D
     * Devuelve una respuesta HTTP con estado 200 OK. */
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     public ResponseEntity<?> deleteById(@PathVariable ID id){
         logger.info("INICIO DELETE BY ID deleteById(@PathVariable ID id) - BaseController");
         logger.info("Llamando a FACADE deleteById(id)  - BaseController");

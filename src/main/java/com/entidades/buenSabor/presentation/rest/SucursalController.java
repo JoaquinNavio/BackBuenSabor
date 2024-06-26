@@ -9,6 +9,7 @@ import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class SucursalController extends BaseControllerImp<Sucursal, SucursalDto,
         super(facade);
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @Override
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SucursalDto> create(@ModelAttribute SucursalCreateDto entity) {
@@ -30,7 +32,7 @@ public class SucursalController extends BaseControllerImp<Sucursal, SucursalDto,
         }
     }
 
-
+    @PreAuthorize("hasAuthority('Admin')")
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SucursalDto> update(@PathVariable Long id, @ModelAttribute SucursalCreateDto entity) {
         try {
