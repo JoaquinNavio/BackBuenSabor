@@ -26,6 +26,9 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
     @Autowired
     private ArticuloInsumoMapper articuloInsumoMapper;
 
+
+
+
     @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @PostMapping("/crearCompleto")
     //@PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
@@ -35,12 +38,18 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
         return facade.createCompleto(articuloDto);
     }
 
+
+
     @PostMapping
     @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
     @Override
     public ResponseEntity<ArticuloInsumoDto> create(@RequestBody ArticuloInsumoCreateDto entity) {
         return ResponseEntity.ok(facade.createNew(entity));
     }
+
+
+
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('Cocinero') or hasAuthority('Admin')")
