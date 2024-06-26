@@ -21,5 +21,6 @@ public interface ArticuloManufacturadoRepository extends BaseRepository<Articulo
     @Query("SELECT amd FROM ArticuloManufacturadoDetalle amd WHERE amd.articuloManufacturado.id = :id and amd.eliminado is false")
     List<ArticuloManufacturadoDetalle> findDetallesById(@Param("id") Long id);
 
-    List<ArticuloManufacturado> findBySucursalId(Long sucursalId);
+    @Query("SELECT am FROM ArticuloManufacturado am WHERE am.sucursal.id = :sucursalId AND am.eliminado = false")
+    List<ArticuloManufacturado> findBySucursalId(@Param("sucursalId") Long sucursalId);
 }

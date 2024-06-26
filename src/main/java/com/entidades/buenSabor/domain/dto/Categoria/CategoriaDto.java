@@ -16,4 +16,5 @@ public class CategoriaDto extends BaseDto {
     private boolean esInsumo;
     private CategoriaDto categoriaPadre;
     private Long sucursal_id;
+    private String url_imagen;
 }

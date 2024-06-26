@@ -19,6 +19,7 @@ public class Categoria extends Base{
 
     private String denominacion;
     private boolean esInsumo;
+    private String url_imagen;
 
     /*@ManyToMany(mappedBy = "categorias")
     @Builder.Default
