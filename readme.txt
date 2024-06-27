@@ -1,7 +1,27 @@
-ADMIN USER: joaconavio10@gmail.com  password: joacokpo10
+Name: cocinero
 
-COCINERO USER: joaconavio10Cocinero@gmail.com  password: joacokpo10 
-(unica diferencia actual es que cocinero puede acceder a crud de unidad de medida, insumo, manufacturado y crud
-, pero en el resto de vistas solo puede acceder a verlas, es decir no puede modificar eliminar ni crear)
+email:  cocinero@gmail.com 
 
-Los datos están rellenos en Empresa: Binance, Sucursal: Binance Lujan
+password: ..JoacoNavio10
+
+rol: cocinero,
+
+----------------------------------------
+
+name: joaco
+
+email: joaconavio10@gmail.com
+
+password: ..JoacoNavio10
+
+rol: administrador general
+
+----------------------------------------
+
+name: visor
+
+email: visor@gmail.com
+
+password: ..JoacoNavio10
+
+rol: visor
